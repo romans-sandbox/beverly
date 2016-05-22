@@ -11,6 +11,11 @@ var lipsDrawing = function() {
       movable: false,
       startX: 0,
       prevX: 0
+    },
+    lower: {
+      movable: false,
+      startX: 0,
+      prevX: 0
     }
   };
 
@@ -22,41 +27,61 @@ var lipsDrawing = function() {
     v.lowerTrajectory = document.querySelector('#lips-drawing-lower-trajectory');
   };
 
+  function calculateTrajectoryPoint(t) {
+    var containerBox, availWidth;
+
+    containerBox = v.container.getBoundingClientRect();
+    availWidth = containerBox.width - options.controlBoxSize;
+
+    return {
+      x: t * availWidth,
+      y: 2 * t * (1 - t) * (-options.curvatureOffset)
+    };
+  }
+
+  function calculateUpperX(ev, start) {
+    var containerBox, availWidth, result;
+
+    containerBox = v.container.getBoundingClientRect();
+    availWidth = containerBox.width - options.controlBoxSize;
+    result = ev.pageX - containerBox.left - options.controlBoxSize / 2 - start;
+
+    if (result < 0) {
+      result = 0;
+    }
+
+    if (result > availWidth) {
+      result = availWidth;
+    }
+
+    return result;
+  }
+
+  function calculateLowerX(ev, start) {
+    var containerBox, availWidth, result;
+
+    containerBox = v.container.getBoundingClientRect();
+    availWidth = containerBox.width - options.controlBoxSize;
+    result = availWidth - ev.pageX + containerBox.left + options.controlBoxSize / 2 - start;
+
+    if (result < 0) {
+      result = 0;
+    }
+
+    if (result > availWidth) {
+      result = availWidth;
+    }
+
+    return result;
+  }
+
   module.initUpper = function() {
-    function calculateX(ev, start) {
-      var containerBox, availWidth, result;
-
-      containerBox = v.container.getBoundingClientRect();
-      availWidth = containerBox.width - options.controlBoxSize;
-      result = ev.pageX - containerBox.left - options.controlBoxSize / 2 - start;
-
-      if (result < 0) {
-        result = 0;
-      }
-
-      if (result > availWidth) {
-        result = availWidth;
-      }
-
-      return result;
-    }
-
-    function calculateTrajectoryPoint(t) {
-      var containerBox, availWidth;
-
-      containerBox = v.container.getBoundingClientRect();
-      availWidth = containerBox.width - options.controlBoxSize;
-
-      return {
-        x: t * availWidth,
-        y: 2 * t * (1 - t) * (-options.curvatureOffset)
-      };
-    }
-
     v.upperControl.addEventListener('mousedown', function(ev) {
+      ev.preventDefault();
+
       status.upper.movable = true;
 
-      status.upper.startX = calculateX(ev, 0) - status.upper.prevX;
+      status.upper.startX = calculateUpperX(ev, 0) - status.upper.prevX;
     }, false);
 
     document.addEventListener('mouseup', function() {
@@ -66,11 +91,13 @@ var lipsDrawing = function() {
     document.addEventListener('mousemove', function(ev) {
       var containerBox, availWidth, point, upperX;
 
+      ev.preventDefault();
+
       containerBox = v.container.getBoundingClientRect();
       availWidth = containerBox.width - options.controlBoxSize;
 
       if (status.upper.movable) {
-        upperX = calculateX(ev, status.upper.startX);
+        upperX = calculateUpperX(ev, status.upper.startX);
 
         status.upper.prevX = upperX;
 
@@ -83,7 +110,37 @@ var lipsDrawing = function() {
   };
 
   module.initLower = function() {
-    //
+    v.lowerControl.addEventListener('mousedown', function(ev) {
+      ev.preventDefault();
+
+      status.lower.movable = true;
+
+      status.lower.startX = calculateLowerX(ev, 0) - status.lower.prevX;
+    }, false);
+
+    document.addEventListener('mouseup', function() {
+      status.lower.movable = false;
+    }, false);
+
+    document.addEventListener('mousemove', function(ev) {
+      var containerBox, availWidth, point, lowerX;
+
+      ev.preventDefault();
+
+      containerBox = v.container.getBoundingClientRect();
+      availWidth = containerBox.width - options.controlBoxSize;
+
+      if (status.lower.movable) {
+        lowerX = calculateLowerX(ev, status.lower.startX);
+
+        status.lower.prevX = lowerX;
+
+        point = calculateTrajectoryPoint(lowerX / availWidth);
+
+        v.lowerControl.style.right = point.x + 'px';
+        v.lowerControl.style.bottom = point.y + 'px';
+      }
+    }, false);
   };
 
   return module;
