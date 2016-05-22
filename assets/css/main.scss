@@ -15,19 +15,17 @@ div.lips-drawing-container {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border: 1px dotted $k3;
   width: 300px;
-  height: 220px;
+  height: 120px;
 
   div.control {
     position: absolute;
-
-    &.lower {
-      bottom: 0;
-      right: 0;
-    }
+    left: 0;
 
     div.main {
+      position: absolute;
+      left: 3px;
+      top: 3px;
       width: 30px;
       height: 30px;
       background: $k3;
@@ -36,13 +34,33 @@ div.lips-drawing-container {
 
     div.shadow {
       position: absolute;
-      top: -3px;
-      left: -3px;
+      top: 0;
+      left: 0;
       z-index: -1;
       width: 36px;
       height: 36px;
       background: $k4;
       border-radius: 100%;
+    }
+
+    &.lower {
+      bottom: 0;
+      right: 0;
+      left: auto;
+
+      div.main {
+        right: 3px;
+        left: auto;
+        bottom: 3px;
+        top: auto;
+      }
+
+      div.shadow {
+        top: auto;
+        bottom: 0;
+        left: auto;
+        right: 0;
+      }
     }
   }
 }
