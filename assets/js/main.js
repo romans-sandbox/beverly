@@ -10,12 +10,14 @@ var lipsDrawing = function() {
     upper: {
       movable: false,
       startX: 0,
-      prevX: 0
+      prevX: 0,
+      progress: 0
     },
     lower: {
       movable: false,
       startX: 0,
-      prevX: 0
+      prevX: 0,
+      progress: 0
     }
   };
 
@@ -100,6 +102,7 @@ var lipsDrawing = function() {
         upperX = calculateUpperX(ev, status.upper.startX);
 
         status.upper.prevX = upperX;
+        status.upper.progress = upperX / availWidth;
 
         point = calculateTrajectoryPoint(upperX / availWidth);
 
@@ -134,6 +137,7 @@ var lipsDrawing = function() {
         lowerX = calculateLowerX(ev, status.lower.startX);
 
         status.lower.prevX = lowerX;
+        status.lower.progress = lowerX / availWidth;
 
         point = calculateTrajectoryPoint(lowerX / availWidth);
 
