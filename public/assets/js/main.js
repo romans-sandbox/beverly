@@ -29,16 +29,31 @@ var lipsDrawing = function() {
     v.lowerTrajectory = document.querySelector('#lips-drawing-lower-trajectory');
   };
 
-  function calculateTrajectoryPoint(t) {
-    var containerBox, availWidth;
+  function calculateTrajectoryPoint(t, prev) {
+    var containerBox, availWidth, point, prevPoint;
 
     containerBox = v.container.getBoundingClientRect();
     availWidth = containerBox.width - options.controlBoxSize;
 
-    return {
+    point = {
       x: t * availWidth,
-      y: 2 * t * (1 - t) * (-options.curvatureOffset)
+      y: 2 * t * (1 - t) * (-options.curvatureOffset),
+      angle: null
     };
+
+    if (!prev) {
+      if (t < 0.05) {
+        prevPoint = calculateTrajectoryPoint(t + 0.05, true);
+        point.angle = Math.atan2(prevPoint.y - point.y, prevPoint.x - point.x);
+      } else {
+        prevPoint = calculateTrajectoryPoint(t - 0.05, true);
+        point.angle = Math.atan2(point.y - prevPoint.y, point.x - prevPoint.x);
+      }
+
+      point.angle /= 2 * Math.PI / 360;
+    }
+
+    return point;
   }
 
   function calculateUpperX(ev, start) {
