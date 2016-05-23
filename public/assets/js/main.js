@@ -170,29 +170,31 @@ var magicControls = function() {
     if (wrappers) {
       for (i = 0; i < wrappers.length; i++) {
         (function(wrapper, control, shadowA, shadowB, shadowC, duration) {
-          var wrapperBox, targetRadius;
+          var wrapperBox, targetRadius, t1;
+          var aRadius, bRadius, cRadius;
+          var resetTimeout;
 
           wrapperBox = control.getBoundingClientRect();
 
-          targetRadius = Math.sqrt(
-            Math.pow(
-              Math.max(
-                wrapperBox.left,
-                window.innerWidth - wrapperBox.left - wrapperBox.width
-              ),
-              2
-            ) +
-            Math.pow(
-              Math.max(
-                wrapperBox.top,
-                window.innerHeight - wrapperBox.top - wrapperBox.height
-              ),
-              2
-            )
-          ) + wrapperBox.width;
-
           wrapper.addEventListener('mousedown', function() {
-            var aRadius, bRadius, cRadius;
+            window.clearTimeout(resetTimeout);
+
+            targetRadius = Math.sqrt(
+                Math.pow(
+                  Math.max(
+                    wrapperBox.left,
+                    window.innerWidth - wrapperBox.left - wrapperBox.width
+                  ),
+                  2
+                ) +
+                Math.pow(
+                  Math.max(
+                    wrapperBox.top,
+                    window.innerHeight - wrapperBox.top - wrapperBox.height
+                  ),
+                  2
+                )
+              ) + wrapperBox.width;
 
             wrapper.classList.add('state-0');
             wrapper.classList.add('state-a');
@@ -201,47 +203,64 @@ var magicControls = function() {
             bRadius = options.bCoefficient * targetRadius;
             cRadius = targetRadius;
 
-            TweenLite.fromTo(shadowA, duration * options.aCoefficient, {
+            t1 = new TimelineLite();
+
+            t1.fromTo(shadowA, duration * options.aCoefficient, {
               left: wrapperBox.width / 2,
-              top: wrapperBox.height / 2
+              top: wrapperBox.height / 2,
+              width: 0,
+              height: 0
             }, {
               width: aRadius * 2,
               height: aRadius * 2,
               left: -aRadius + wrapperBox.width / 2,
               top: -aRadius + wrapperBox.height / 2,
-              ease: Power4. easeOut,
+              ease: Power4.easeOut,
               onComplete: function() {
                 wrapper.classList.add('state-b');
-
-                TweenLite.fromTo(shadowB, duration * (options.bCoefficient - options.aCoefficient), {
-                  left: wrapperBox.width / 2,
-                  top: wrapperBox.height / 2
-                }, {
-                  width: bRadius * 2,
-                  height: bRadius * 2,
-                  left: -bRadius + wrapperBox.width / 2,
-                  top: -bRadius + wrapperBox.height / 2,
-                  ease: Power4. easeOut,
-                  onComplete: function() {
-                    wrapper.classList.add('state-c');
-
-                    TweenLite.fromTo(shadowC, duration * (1 - options.bCoefficient - options.aCoefficient), {
-                      left: wrapperBox.width / 2,
-                      top: wrapperBox.height / 2
-                    }, {
-                      width: cRadius * 2,
-                      height: cRadius * 2,
-                      left: -cRadius + wrapperBox.width / 2,
-                      top: -cRadius + wrapperBox.height / 2,
-                      ease: Power4. easeOut,
-                      onComplete: function() {
-
-                      }
-                    });
-                  }
-                });
               }
             });
+
+            t1.fromTo(shadowB, duration * (options.bCoefficient - options.aCoefficient), {
+              left: wrapperBox.width / 2,
+              top: wrapperBox.height / 2,
+              width: 0,
+              height: 0
+            }, {
+              width: bRadius * 2,
+              height: bRadius * 2,
+              left: -bRadius + wrapperBox.width / 2,
+              top: -bRadius + wrapperBox.height / 2,
+              ease: Power4.easeOut,
+              onComplete: function() {
+                wrapper.classList.add('state-c');
+              }
+            });
+
+            t1.fromTo(shadowC, duration * (1 - options.bCoefficient - options.aCoefficient), {
+              left: wrapperBox.width / 2,
+              top: wrapperBox.height / 2,
+              width: 0,
+              height: 0
+            }, {
+              width: cRadius * 2,
+              height: cRadius * 2,
+              left: -cRadius + wrapperBox.width / 2,
+              top: -cRadius + wrapperBox.height / 2,
+              ease: Power4. easeOut
+            });
+          });
+
+          wrapper.addEventListener('mouseup', function() {
+            t1.duration(duration / 4);
+            t1.reverse();
+
+            resetTimeout = window.setTimeout(function() {
+              wrapper.classList.remove('state-0');
+              wrapper.classList.remove('state-a');
+              wrapper.classList.remove('state-b');
+              wrapper.classList.remove('state-c');
+            }, duration * 1000 / 4);
           });
         })(
           wrappers[i],
