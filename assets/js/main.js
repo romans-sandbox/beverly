@@ -150,8 +150,120 @@ var lipsDrawing = function() {
   return module;
 }();
 
+var magicControls = function() {
+  var module = {};
+
+  var options = {
+    aCoefficient: 0.2,
+    bCoefficient: 0.6
+  };
+
+  module.init = function(context) {
+    var wrappers, i;
+
+    if (!context) {
+      context = document;
+    }
+
+    wrappers = context.querySelectorAll('[data-magic-control]');
+
+    if (wrappers) {
+      for (i = 0; i < wrappers.length; i++) {
+        (function(wrapper, control, shadowA, shadowB, shadowC, duration) {
+          var wrapperBox, targetRadius;
+
+          wrapperBox = control.getBoundingClientRect();
+
+          targetRadius = Math.sqrt(
+            Math.pow(
+              Math.max(
+                wrapperBox.left,
+                window.innerWidth - wrapperBox.left - wrapperBox.width
+              ),
+              2
+            ) +
+            Math.pow(
+              Math.max(
+                wrapperBox.top,
+                window.innerHeight - wrapperBox.top - wrapperBox.height
+              ),
+              2
+            )
+          ) + wrapperBox.width;
+
+          wrapper.addEventListener('mousedown', function() {
+            var aRadius, bRadius, cRadius;
+
+            wrapper.classList.add('state-0');
+            wrapper.classList.add('state-a');
+
+            aRadius = options.aCoefficient * targetRadius;
+            bRadius = options.bCoefficient * targetRadius;
+            cRadius = targetRadius;
+
+            TweenLite.fromTo(shadowA, duration * options.aCoefficient, {
+              left: wrapperBox.width / 2,
+              top: wrapperBox.height / 2
+            }, {
+              width: aRadius * 2,
+              height: aRadius * 2,
+              left: -aRadius + wrapperBox.width / 2,
+              top: -aRadius + wrapperBox.height / 2,
+              ease: Power4. easeOut,
+              onComplete: function() {
+                wrapper.classList.add('state-b');
+
+                TweenLite.fromTo(shadowB, duration * (options.bCoefficient - options.aCoefficient), {
+                  left: wrapperBox.width / 2,
+                  top: wrapperBox.height / 2
+                }, {
+                  width: bRadius * 2,
+                  height: bRadius * 2,
+                  left: -bRadius + wrapperBox.width / 2,
+                  top: -bRadius + wrapperBox.height / 2,
+                  ease: Power4. easeOut,
+                  onComplete: function() {
+                    wrapper.classList.add('state-c');
+
+                    TweenLite.fromTo(shadowC, duration * (1 - options.bCoefficient - options.aCoefficient), {
+                      left: wrapperBox.width / 2,
+                      top: wrapperBox.height / 2
+                    }, {
+                      width: cRadius * 2,
+                      height: cRadius * 2,
+                      left: -cRadius + wrapperBox.width / 2,
+                      top: -cRadius + wrapperBox.height / 2,
+                      ease: Power4. easeOut,
+                      onComplete: function() {
+
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          });
+        })(
+          wrappers[i],
+          wrappers[i].querySelector('[data-control]'),
+          wrappers[i].querySelector('[data-shadow-a]'),
+          wrappers[i].querySelector('[data-shadow-b]'),
+          wrappers[i].querySelector('[data-shadow-c]'),
+          +wrappers[i].getAttribute('data-duration')
+        );
+      }
+    }
+  };
+
+  return module;
+}();
+
 ////
 
 lipsDrawing.query();
 lipsDrawing.initUpper();
 lipsDrawing.initLower();
+
+///
+
+magicControls.init();
