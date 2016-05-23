@@ -1,7 +1,9 @@
-$km1: rgb(0, 0, 0);
+$km1: rgb(222, 135, 148);
 $km2: rgb(170, 117, 106);
-$km3: rgb(233, 52, 56);
-$km4: pink;
+$km3: rgb(255, 107, 157);
+$km4: rgb(233, 52, 56);
+$km5: rgb(210, 75, 118);
+$km6: rgb(0, 0, 0);
 $k1: #fff;
 $k2: #000;
 $k3: #bbb;
@@ -295,6 +297,52 @@ div.magic-disk {
 
     div.shadow-d {
       background: rgba($km4, 0.8);
+    }
+  }
+
+  &.style-5 {
+    div.disk,
+    div.shadow-e {
+      background: $km5;
+    }
+
+    div.shadow-a {
+      background: rgba($km5, 0.2);
+    }
+
+    div.shadow-b {
+      background: rgba($km5, 0.4);
+    }
+
+    div.shadow-c {
+      background: rgba($km5, 0.6);
+    }
+
+    div.shadow-d {
+      background: rgba($km5, 0.8);
+    }
+  }
+
+  &.style-6 {
+    div.disk,
+    div.shadow-e {
+      background: $km6;
+    }
+
+    div.shadow-a {
+      background: rgba($km6, 0.2);
+    }
+
+    div.shadow-b {
+      background: rgba($km6, 0.4);
+    }
+
+    div.shadow-c {
+      background: rgba($km6, 0.6);
+    }
+
+    div.shadow-d {
+      background: rgba($km6, 0.8);
     }
   }
 }
