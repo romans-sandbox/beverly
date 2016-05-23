@@ -153,10 +153,7 @@ var lipsDrawing = function() {
 var magicControls = function() {
   var module = {};
 
-  var options = {
-    aCoefficient: 0.2,
-    bCoefficient: 0.6
-  };
+  var options = {};
 
   module.init = function(context) {
     var wrappers, i;
@@ -169,10 +166,9 @@ var magicControls = function() {
 
     if (wrappers) {
       for (i = 0; i < wrappers.length; i++) {
-        (function(wrapper, control, shadowA, shadowB, shadowC, duration) {
-          var wrapperBox, targetRadius, t1;
-          var aRadius, bRadius, cRadius;
-          var resetTimeout;
+        (function(wrapper, control, shadows, duration) {
+          var wrapperBox, targetRadius, radius, shadowName, t1;
+          var i, resetTimeout;
 
           wrapperBox = control.getBoundingClientRect();
 
@@ -197,58 +193,29 @@ var magicControls = function() {
               ) + wrapperBox.width;
 
             wrapper.classList.add('state-0');
-            wrapper.classList.add('state-a');
-
-            aRadius = options.aCoefficient * targetRadius;
-            bRadius = options.bCoefficient * targetRadius;
-            cRadius = targetRadius;
 
             t1 = new TimelineLite();
 
-            t1.fromTo(shadowA, duration * options.aCoefficient, {
-              left: wrapperBox.width / 2,
-              top: wrapperBox.height / 2,
-              width: 0,
-              height: 0
-            }, {
-              width: aRadius * 2,
-              height: aRadius * 2,
-              left: -aRadius + wrapperBox.width / 2,
-              top: -aRadius + wrapperBox.height / 2,
-              ease: Power4.easeOut,
-              onComplete: function() {
-                wrapper.classList.add('state-b');
-              }
-            });
+            for (i = 0; i < shadows.length; i++) {
+              shadowName = shadows[i].getAttribute('data-shadow');
+              radius = targetRadius / Math.pow(shadows.length, 3) * Math.pow(i + 1, 3);
 
-            t1.fromTo(shadowB, duration * (options.bCoefficient - options.aCoefficient), {
-              left: wrapperBox.width / 2,
-              top: wrapperBox.height / 2,
-              width: 0,
-              height: 0
-            }, {
-              width: bRadius * 2,
-              height: bRadius * 2,
-              left: -bRadius + wrapperBox.width / 2,
-              top: -bRadius + wrapperBox.height / 2,
-              ease: Power4.easeOut,
-              onComplete: function() {
-                wrapper.classList.add('state-c');
-              }
-            });
-
-            t1.fromTo(shadowC, duration * (1 - options.bCoefficient - options.aCoefficient), {
-              left: wrapperBox.width / 2,
-              top: wrapperBox.height / 2,
-              width: 0,
-              height: 0
-            }, {
-              width: cRadius * 2,
-              height: cRadius * 2,
-              left: -cRadius + wrapperBox.width / 2,
-              top: -cRadius + wrapperBox.height / 2,
-              ease: Power4. easeOut
-            });
+              t1.fromTo(shadows[i], duration / shadows.length, {
+                left: wrapperBox.width / 2,
+                top: wrapperBox.height / 2,
+                width: 0,
+                height: 0
+              }, {
+                width: radius * 2,
+                height: radius * 2,
+                left: -radius + wrapperBox.width / 2,
+                top: -radius + wrapperBox.height / 2,
+                ease: Power4.easeOut,
+                onStart: function() {
+                  wrapper.classList.add('state-' + shadowName);
+                }
+              });
+            }
           });
 
           wrapper.addEventListener('mouseup', function() {
@@ -257,17 +224,18 @@ var magicControls = function() {
 
             resetTimeout = window.setTimeout(function() {
               wrapper.classList.remove('state-0');
-              wrapper.classList.remove('state-a');
-              wrapper.classList.remove('state-b');
-              wrapper.classList.remove('state-c');
+
+              for (i = 0; i < shadows.length; i++) {
+                shadowName = shadows[i].getAttribute('data-shadow');
+
+                wrapper.classList.remove('state-' + shadowName);
+              }
             }, duration * 1000 / 4);
           });
         })(
           wrappers[i],
           wrappers[i].querySelector('[data-control]'),
-          wrappers[i].querySelector('[data-shadow-a]'),
-          wrappers[i].querySelector('[data-shadow-b]'),
-          wrappers[i].querySelector('[data-shadow-c]'),
+          wrappers[i].querySelectorAll('[data-shadow]'),
           +wrappers[i].getAttribute('data-duration')
         );
       }
