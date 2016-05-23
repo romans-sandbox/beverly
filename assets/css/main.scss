@@ -63,4 +63,16 @@ div.lips-drawing-container {
       }
     }
   }
+
+  div.trajectory {
+    position: absolute;
+    top: -32px;
+    left: 18px;
+    z-index: -1;
+
+    &.lower {
+      top: auto;
+      bottom: -82px;
+    }
+  }
 }
