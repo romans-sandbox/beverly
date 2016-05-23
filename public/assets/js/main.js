@@ -102,7 +102,29 @@ var lipsDrawing = function() {
     }, false);
 
     document.addEventListener('mouseup', function() {
-      status.upper.movable = false;
+      var o, point;
+
+      if (status.upper.movable) {
+        status.upper.movable = false;
+
+        if (status.upper.progress < 1 && status.upper.progress > 0) {
+          o = {x: status.upper.progress};
+
+          TweenLite.to(o, 0.5, {
+            x: 0,
+            onUpdate: function() {
+              point = calculateTrajectoryPoint(o.x);
+
+              v.upperControl.style.right = point.x + 'px';
+              v.upperControl.style.top = point.y + 'px';
+            },
+            onComplete: function() {
+              status.upper.prevX = 0;
+              status.upper.progress = 0;
+            }
+          });
+        }
+      }
     }, false);
 
     document.addEventListener('mousemove', function(ev) {
@@ -137,7 +159,29 @@ var lipsDrawing = function() {
     }, false);
 
     document.addEventListener('mouseup', function() {
-      status.lower.movable = false;
+      var o, point;
+
+      if (status.lower.movable) {
+        status.lower.movable = false;
+
+        if (status.lower.progress < 1 && status.lower.progress > 0) {
+          o = {x: status.lower.progress};
+
+          TweenLite.to(o, 0.5, {
+            x: 0,
+            onUpdate: function() {
+              point = calculateTrajectoryPoint(o.x);
+
+              v.lowerControl.style.left = point.x + 'px';
+              v.lowerControl.style.bottom = point.y + 'px';
+            },
+            onComplete: function() {
+              status.lower.prevX = 0;
+              status.lower.progress = 0;
+            }
+          });
+        }
+      }
     }, false);
 
     document.addEventListener('mousemove', function(ev) {
