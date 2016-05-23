@@ -163,7 +163,9 @@ div.magic-disk {
 
   div.shadow-a,
   div.shadow-b,
-  div.shadow-c {
+  div.shadow-c,
+  div.shadow-d,
+  div.shadow-e {
     position: absolute;
     border-radius: 100%;
   }
@@ -192,9 +194,21 @@ div.magic-disk {
     }
   }
 
+  &.state-d {
+    div.shadow-d {
+      z-index: 40;
+    }
+  }
+
+  &.state-e {
+    div.shadow-e {
+      z-index: 50;
+    }
+  }
+
   &.style-1 {
     div.disk,
-    div.shadow-c {
+    div.shadow-e {
       background: $km1;
     }
 
@@ -203,13 +217,21 @@ div.magic-disk {
     }
 
     div.shadow-b {
-      background: rgba($km1, 0.7);
+      background: rgba($km1, 0.4);
+    }
+
+    div.shadow-c {
+      background: rgba($km1, 0.6);
+    }
+
+    div.shadow-d {
+      background: rgba($km1, 0.8);
     }
   }
 
   &.style-2 {
     div.disk,
-    div.shadow-c {
+    div.shadow-e {
       background: $km2;
     }
 
@@ -218,13 +240,21 @@ div.magic-disk {
     }
 
     div.shadow-b {
-      background: rgba($km2, 0.7);
+      background: rgba($km2, 0.4);
+    }
+
+    div.shadow-c {
+      background: rgba($km2, 0.6);
+    }
+
+    div.shadow-d {
+      background: rgba($km2, 0.8);
     }
   }
 
   &.style-3 {
     div.disk,
-    div.shadow-c {
+    div.shadow-e {
       background: $km3;
     }
 
@@ -233,7 +263,15 @@ div.magic-disk {
     }
 
     div.shadow-b {
-      background: rgba($km3, 0.7);
+      background: rgba($km3, 0.4);
+    }
+
+    div.shadow-c {
+      background: rgba($km3, 0.6);
+    }
+
+    div.shadow-d {
+      background: rgba($km3, 0.8);
     }
   }
 }

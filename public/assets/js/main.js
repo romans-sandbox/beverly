@@ -167,7 +167,7 @@ var magicControls = function() {
     if (wrappers) {
       for (i = 0; i < wrappers.length; i++) {
         (function(wrapper, control, shadows, duration) {
-          var wrapperBox, targetRadius, radius, shadowName, t1;
+          var wrapperBox, targetRadius, t1;
           var i, resetTimeout;
 
           wrapperBox = control.getBoundingClientRect();
@@ -197,24 +197,26 @@ var magicControls = function() {
             t1 = new TimelineLite();
 
             for (i = 0; i < shadows.length; i++) {
-              shadowName = shadows[i].getAttribute('data-shadow');
-              radius = targetRadius / Math.pow(shadows.length, 3) * Math.pow(i + 1, 3);
-
-              t1.fromTo(shadows[i], duration / shadows.length, {
-                left: wrapperBox.width / 2,
-                top: wrapperBox.height / 2,
-                width: 0,
-                height: 0
-              }, {
-                width: radius * 2,
-                height: radius * 2,
-                left: -radius + wrapperBox.width / 2,
-                top: -radius + wrapperBox.height / 2,
-                ease: Power4.easeOut,
-                onStart: function() {
-                  wrapper.classList.add('state-' + shadowName);
-                }
-              });
+              (function(shadowName, radius) {
+                t1.fromTo(shadows[i], duration / shadows.length, {
+                  left: wrapperBox.width / 2,
+                  top: wrapperBox.height / 2,
+                  width: 0,
+                  height: 0
+                }, {
+                  width: radius * 2,
+                  height: radius * 2,
+                  left: -radius + wrapperBox.width / 2,
+                  top: -radius + wrapperBox.height / 2,
+                  ease: Power4.easeOut,
+                  onStart: function() {
+                    wrapper.classList.add('state-' + shadowName);
+                  }
+                });
+              })(
+                shadows[i].getAttribute('data-shadow'),
+                targetRadius / Math.pow(shadows.length, 2) * Math.pow(i + 1, 2)
+              );
             }
           });
 
