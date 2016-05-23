@@ -40,11 +40,11 @@ div.lips-drawing-container {
 
   div.control {
     position: absolute;
-    left: 0;
+    right: 0;
 
     div.main {
       position: absolute;
-      left: 3px;
+      right: 3px;
       top: 3px;
       width: 30px;
       height: 30px;
@@ -55,7 +55,7 @@ div.lips-drawing-container {
     div.shadow {
       position: absolute;
       top: 0;
-      left: 0;
+      right: 0;
       z-index: -1;
       width: 36px;
       height: 36px;
@@ -65,12 +65,12 @@ div.lips-drawing-container {
 
     &.lower {
       bottom: 0;
-      right: 0;
-      left: auto;
+      left: 0;
+      right: auto;
 
       div.main {
-        right: 3px;
-        left: auto;
+        left: 3px;
+        right: auto;
         bottom: 3px;
         top: auto;
       }
@@ -78,8 +78,8 @@ div.lips-drawing-container {
       div.shadow {
         top: auto;
         bottom: 0;
-        left: auto;
-        right: 0;
+        right: auto;
+        left: 0;
       }
     }
   }

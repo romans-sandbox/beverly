@@ -61,7 +61,7 @@ var lipsDrawing = function() {
 
     containerBox = v.container.getBoundingClientRect();
     availWidth = containerBox.width - options.controlBoxSize;
-    result = ev.pageX - containerBox.left - options.controlBoxSize / 2 - start;
+    result = availWidth - ev.pageX + containerBox.left + options.controlBoxSize / 2 - start;
 
     if (result < 0) {
       result = 0;
@@ -79,7 +79,7 @@ var lipsDrawing = function() {
 
     containerBox = v.container.getBoundingClientRect();
     availWidth = containerBox.width - options.controlBoxSize;
-    result = availWidth - ev.pageX + containerBox.left + options.controlBoxSize / 2 - start;
+    result = ev.pageX - containerBox.left - options.controlBoxSize / 2 - start;
 
     if (result < 0) {
       result = 0;
@@ -121,7 +121,7 @@ var lipsDrawing = function() {
 
         point = calculateTrajectoryPoint(upperX / availWidth);
 
-        v.upperControl.style.left = point.x + 'px';
+        v.upperControl.style.right = point.x + 'px';
         v.upperControl.style.top = point.y + 'px';
       }
     }, false);
@@ -156,7 +156,7 @@ var lipsDrawing = function() {
 
         point = calculateTrajectoryPoint(lowerX / availWidth);
 
-        v.lowerControl.style.right = point.x + 'px';
+        v.lowerControl.style.left = point.x + 'px';
         v.lowerControl.style.bottom = point.y + 'px';
       }
     }, false);
