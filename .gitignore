@@ -1,6 +1,6 @@
 # application
-assets/css/**/*.css
-assets/css/**/*.css.map
+public/assets/css/**/*.css
+public/assets/css/**/*.css.map
 
 # JetBrain products
 .idea/
