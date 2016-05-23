@@ -2,15 +2,17 @@ $k1: #fff;
 $k2: #000;
 $k3: #bbb;
 $k4: #ddd;
+$k5: #4b5252;
 
 body {
   margin: 0;
   font: 16px 'Helvetica Neue', 'Helvetica', sans-serif;
-  background: $k1;
-  color: $k2;
+  background: $k5;
+  color: $k1;
 }
 
 div.lips-drawing-container {
+  display: none;
   position: absolute;
   left: 50%;
   top: 50%;
