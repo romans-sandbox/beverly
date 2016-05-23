@@ -3,7 +3,12 @@ var lipsDrawing = function() {
 
   var options = {
     controlBoxSize: 38,
-    curvatureOffset: 100
+    curvatureOffset: 100,
+    threshold: 0.9,
+    pointDiff: 0.05,
+    durations: {
+      controlReturn: 0.5
+    }
   };
 
   var status = {
@@ -42,11 +47,11 @@ var lipsDrawing = function() {
     };
 
     if (!prev) {
-      if (t < 0.05) {
-        prevPoint = calculateTrajectoryPoint(t + 0.05, true);
+      if (t < options.pointDiff) {
+        prevPoint = calculateTrajectoryPoint(t + options.pointDiff, true);
         point.angle = Math.atan2(prevPoint.y - point.y, prevPoint.x - point.x);
       } else {
-        prevPoint = calculateTrajectoryPoint(t - 0.05, true);
+        prevPoint = calculateTrajectoryPoint(t - options.pointDiff, true);
         point.angle = Math.atan2(point.y - prevPoint.y, point.x - prevPoint.x);
       }
 
@@ -107,10 +112,10 @@ var lipsDrawing = function() {
       if (status.upper.movable) {
         status.upper.movable = false;
 
-        if (status.upper.progress < 1 && status.upper.progress > 0) {
+        if (status.upper.progress < options.threshold && status.upper.progress > 0) {
           o = {x: status.upper.progress};
 
-          TweenLite.to(o, 0.5, {
+          TweenLite.to(o, options.durations.controlReturn, {
             x: 0,
             onUpdate: function() {
               point = calculateTrajectoryPoint(o.x);
@@ -164,10 +169,10 @@ var lipsDrawing = function() {
       if (status.lower.movable) {
         status.lower.movable = false;
 
-        if (status.lower.progress < 1 && status.lower.progress > 0) {
+        if (status.lower.progress < options.threshold && status.lower.progress > 0) {
           o = {x: status.lower.progress};
 
-          TweenLite.to(o, 0.5, {
+          TweenLite.to(o, options.durations.controlReturn, {
             x: 0,
             onUpdate: function() {
               point = calculateTrajectoryPoint(o.x);
