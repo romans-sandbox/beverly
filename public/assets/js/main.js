@@ -2,7 +2,7 @@ var lipsDrawing = function() {
   var module = {}, v = {};
 
   var options = {
-    controlBoxSize: 36,
+    controlBoxSize: 38,
     curvatureOffset: 100
   };
 

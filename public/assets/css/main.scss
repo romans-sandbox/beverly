@@ -26,7 +26,7 @@ body {
 }
 
 div.intro-background {
-  background: url($img-dir + '/intro-background.png') top center;
+  background: url($img-dir + '/demo-lips.png') top center;
   background-size: cover;
   width: 100%;
   height: 100%;
@@ -36,7 +36,7 @@ div.lips-drawing-container {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-70%, -60%);
   width: 300px;
   height: 120px;
 
@@ -46,11 +46,11 @@ div.lips-drawing-container {
 
     div.main {
       position: absolute;
-      right: 3px;
-      top: 3px;
+      right: 4px;
+      top: 4px;
       width: 30px;
       height: 30px;
-      background: $k3;
+      background: $km1;
       border-radius: 100%;
     }
 
@@ -59,10 +59,14 @@ div.lips-drawing-container {
       top: 0;
       right: 0;
       z-index: -1;
-      width: 36px;
-      height: 36px;
-      background: $k4;
+      width: 38px;
+      height: 38px;
+      background: rgba($km1, 0.25);
       border-radius: 100%;
+      animation-duration: 500ms;
+      animation-name: lips-control-shadow-upper;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
     }
 
     &.lower {
@@ -71,9 +75,9 @@ div.lips-drawing-container {
       right: auto;
 
       div.main {
-        left: 3px;
+        left: 4px;
         right: auto;
-        bottom: 3px;
+        bottom: 4px;
         top: auto;
       }
 
@@ -82,6 +86,7 @@ div.lips-drawing-container {
         bottom: 0;
         right: auto;
         left: 0;
+        animation-name: lips-control-shadow-lower;
       }
     }
   }
@@ -95,6 +100,12 @@ div.lips-drawing-container {
     &.lower {
       top: auto;
       bottom: -82px;
+    }
+
+    svg path {
+      stroke-width: 1px;
+      stroke: $km1;
+      fill: none;
     }
   }
 }
@@ -344,5 +355,39 @@ div.magic-disk {
     div.shadow-d {
       background: rgba($km6, 0.8);
     }
+  }
+}
+
+// animations
+
+@keyframes lips-control-shadow-upper {
+  from {
+    top: 0;
+    right: 0;
+    width: 38px;
+    height: 38px;
+  }
+
+  to {
+    top: -3px;
+    right: -3px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@keyframes lips-control-shadow-lower {
+  from {
+    bottom: 0;
+    left: 0;
+    width: 38px;
+    height: 38px;
+  }
+
+  to {
+    bottom: -3px;
+    left: -3px;
+    width: 44px;
+    height: 44px;
   }
 }
