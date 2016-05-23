@@ -279,7 +279,9 @@ var magicControls = function() {
                 });
               })(
                 shadows[i].getAttribute('data-shadow'),
-                targetRadius / Math.pow(shadows.length, 2) * Math.pow(i + 1, 2)
+                i === 0
+                  ? wrapperBox.width / 2 * 1.25
+                  : targetRadius / Math.pow(shadows.length, 2) * Math.pow(i + 1, 2)
               );
             }
           });
