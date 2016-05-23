@@ -1,6 +1,7 @@
 $km1: rgb(0, 0, 0);
 $km2: rgb(170, 117, 106);
 $km3: rgb(233, 52, 56);
+$k1: #fff;
 $k2: #000;
 $k3: #bbb;
 $k4: #ddd;
@@ -100,36 +101,19 @@ div.simple-button {
   position: relative;
   display: inline-block;
   vertical-align: baseline;
-
-  div.wrapper-a {
-    box-shadow: inset 0 -2px 0 $k2;
-  }
-
-  div.shadow-a,
-  div.shadow-b {
-    position: absolute;
-    left: 0;
-    top: -2px;
-    width: 100%;
-    height: 100%;
-  }
-
-  div.shadow-a {
-    box-shadow: inset 0 0 0 rgba($k2, 0.25);
-  }
-
-  div.shadow-b {
-    box-shadow: inset 0 0 0 $k2;
-  }
+  background: $k2;
 
   button.control {
-    padding: 0 0;
+    padding: 6px 12px;
     margin: 0;
     text-transform: uppercase;
     background: transparent;
     border-width: 0;
     font-weight: 800;
     font-size: 0.9em;
+    color: $k1;
+    box-shadow: inset 0 0 0 lighten($k2, 25%);
+    transition: 150ms box-shadow;
 
     // legacy
     -webkit-appearance: button;
@@ -142,53 +126,21 @@ div.simple-button {
   }
 
   &.large {
-    div.wrapper-a {
-      box-shadow: inset 0 -3px 0 $k2;
-    }
-
-    div.shadow-a,
-    div.shadow-b {
-      top: -3px;
-    }
-
     button.control {
       font-size: 1.5em;
     }
 
     &:hover {
-      div.shadow-a {
-        box-shadow: inset 0 -4px 0 rgba($k2, 0.25);
+      button.control {
+        box-shadow: inset 0 -41px 0 lighten($k2, 25%);
       }
-
-      div.shadow-b {
-        box-shadow: inset 0 -4px 0 $k2;
-      }
-    }
-  }
-
-  & {
-    div.shadow-a {
-      transition: 75ms box-shadow;
-    }
-
-    div.shadow-b {
-      transition: 75ms box-shadow;
-      transition-delay: 0ms;
-    }
-
-    button.control {
-      transition: 75ms padding-bottom;
     }
   }
 
   &:hover {
-    div.shadow-a {
-      box-shadow: inset 0 -3px 0 rgba($k2, 0.25);
-    }
 
-    div.shadow-b {
-      box-shadow: inset 0 -3px 0 $k2;
-      transition-delay: 150ms;
+    button.control {
+      box-shadow: inset 0 -30px 0 lighten($k2, 25%);
     }
   }
 }
