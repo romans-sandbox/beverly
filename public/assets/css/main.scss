@@ -428,6 +428,35 @@ div.magic-curtain {
   }
 }
 
+div.abh-horizontal-small {
+  background: url($img-dir + '/abh-horizontal-small.png');
+  background-size: 115px 24px;
+  width: 115px;
+  height: 24px;
+}
+
+div.nullmighty-symbol-small {
+  background: url($img-dir + '/nullmighty-symbol-small.png');
+  background-size: 24px 24px;
+  width: 24px;
+  height: 24px;
+}
+
+div.right-page-controls {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+
+  div.abh-horizontal-small,
+  div.nullmighty-symbol-small {
+    display: inline-block;
+  }
+
+  div.abh-horizontal-small {
+    margin-right: 20px;
+  }
+}
+
 // animations
 
 @keyframes lips-control-shadow-upper {
