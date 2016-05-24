@@ -435,7 +435,7 @@ var MagicCurtain = function(curtain) {
     }
 
     timeline.duration(options.durations.fold);
-    timeline.restart();
+    timeline.play();
   };
 
   this.unfold = function() {
@@ -446,6 +446,16 @@ var MagicCurtain = function(curtain) {
 
     timeline.duration(options.durations.unfold);
     timeline.reverse();
+  };
+
+  this.foldAt = function(coefficient) {
+    if (!initialised) {
+      console.error('Timeline not initialised.');
+      return;
+    }
+
+    timeline.seek(coefficient, false);
+    timeline.pause();
   };
 };
 
