@@ -339,11 +339,11 @@ var magicControls = function() {
 
             if (shadows) {
               for (i = 0; i < shadows.length; i++) {
-                (function(shadowName, size) {
+                (function(shadowName, sizeCoefficient) {
                   timeline.fromTo(shadows[i], duration / shadows.length, {
                     width: 0
                   }, {
-                    width: size * 100 + '%',
+                    width: sizeCoefficient * 100 + '%',
                     ease: Power4.easeOut,
                     onStart: function() {
                       curtain.classList.add('state-' + shadowName);
@@ -351,7 +351,7 @@ var magicControls = function() {
                   });
                 })(
                   shadows[i].getAttribute('data-shadow'),
-                  1 / Math.pow(shadows.length, 2) * Math.pow(i + 1, 2)
+                  2 / 3 + 1 / 3 / (shadows.length - 1) * i
                 );
               }
             }
