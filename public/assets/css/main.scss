@@ -178,8 +178,7 @@ div.magic-disk {
   div.shadow-a,
   div.shadow-b,
   div.shadow-c,
-  div.shadow-d,
-  div.shadow-e {
+  div.shadow-d {
     position: absolute;
     border-radius: 100%;
   }
@@ -214,147 +213,117 @@ div.magic-disk {
     }
   }
 
-  &.state-e {
-    div.shadow-e {
-      z-index: 50;
-    }
-  }
-
   &.style-1 {
     div.disk,
-    div.shadow-e {
+    div.shadow-d {
       background: $km1;
     }
 
     div.shadow-a {
-      background: rgba($km1, 0.2);
+      background: rgba($km1, 0.25);
     }
 
     div.shadow-b {
-      background: rgba($km1, 0.4);
+      background: rgba($km1, 0.5);
     }
 
     div.shadow-c {
-      background: rgba($km1, 0.6);
-    }
-
-    div.shadow-d {
-      background: rgba($km1, 0.8);
+      background: rgba($km1, 0.75);
     }
   }
 
   &.style-2 {
     div.disk,
-    div.shadow-e {
+    div.shadow-d {
       background: $km2;
     }
 
     div.shadow-a {
-      background: rgba($km2, 0.2);
+      background: rgba($km2, 0.25);
     }
 
     div.shadow-b {
-      background: rgba($km2, 0.4);
+      background: rgba($km2, 0.5);
     }
 
     div.shadow-c {
-      background: rgba($km2, 0.6);
-    }
-
-    div.shadow-d {
-      background: rgba($km2, 0.8);
+      background: rgba($km2, 0.75);
     }
   }
 
   &.style-3 {
     div.disk,
-    div.shadow-e {
+    div.shadow-d {
       background: $km3;
     }
 
     div.shadow-a {
-      background: rgba($km3, 0.2);
+      background: rgba($km3, 0.25);
     }
 
     div.shadow-b {
-      background: rgba($km3, 0.4);
+      background: rgba($km3, 0.50);
     }
 
     div.shadow-c {
-      background: rgba($km3, 0.6);
-    }
-
-    div.shadow-d {
-      background: rgba($km3, 0.8);
+      background: rgba($km3, 0.75);
     }
   }
 
   &.style-4 {
     div.disk,
-    div.shadow-e {
+    div.shadow-d {
       background: $km4;
     }
 
     div.shadow-a {
-      background: rgba($km4, 0.2);
+      background: rgba($km4, 0.25);
     }
 
     div.shadow-b {
-      background: rgba($km4, 0.4);
+      background: rgba($km4, 0.5);
     }
 
     div.shadow-c {
-      background: rgba($km4, 0.6);
-    }
-
-    div.shadow-d {
-      background: rgba($km4, 0.8);
+      background: rgba($km4, 0.75);
     }
   }
 
   &.style-5 {
     div.disk,
-    div.shadow-e {
+    div.shadow-d {
       background: $km5;
     }
 
     div.shadow-a {
-      background: rgba($km5, 0.2);
+      background: rgba($km5, 0.25);
     }
 
     div.shadow-b {
-      background: rgba($km5, 0.4);
+      background: rgba($km5, 0.5);
     }
 
     div.shadow-c {
-      background: rgba($km5, 0.6);
-    }
-
-    div.shadow-d {
-      background: rgba($km5, 0.8);
+      background: rgba($km5, 0.75);
     }
   }
 
   &.style-6 {
     div.disk,
-    div.shadow-e {
+    div.shadow-d {
       background: $km6;
     }
 
     div.shadow-a {
-      background: rgba($km6, 0.2);
+      background: rgba($km6, 0.25);
     }
 
     div.shadow-b {
-      background: rgba($km6, 0.4);
+      background: rgba($km6, 0.5);
     }
 
     div.shadow-c {
-      background: rgba($km6, 0.6);
-    }
-
-    div.shadow-d {
-      background: rgba($km6, 0.8);
+      background: rgba($km6, 0.75);
     }
   }
 }
