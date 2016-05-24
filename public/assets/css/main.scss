@@ -181,6 +181,11 @@ div.simple-button {
 div.magic-disk {
   position: relative;
   display: inline-block;
+  margin-right: 10px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 
   div.disk {
     position: relative;
@@ -188,6 +193,9 @@ div.magic-disk {
     width: 70px;
     height: 70px;
     border-radius: 100%;
+    border: 5px solid rgba($k1, 0.25);
+    box-sizing: border-box;
+    transition: 200ms border-width;
   }
 
   div.shadow-a,
@@ -201,6 +209,7 @@ div.magic-disk {
   &.state-0 {
     div.disk {
       z-index: 100;
+      border-width: 0;
     }
   }
 
