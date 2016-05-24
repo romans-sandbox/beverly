@@ -366,7 +366,7 @@ var MagicCurtain = function(curtain) {
     }
   };
 
-  var initialised = false, timeline, shadows, resetTimeout;
+  var initialised = false, timeline, shadows;
 
   this.overrideFoldDuration = function(duration) {
     options.durations.fold = duration;
@@ -377,14 +377,19 @@ var MagicCurtain = function(curtain) {
   };
 
   this.init = function() {
+    var firstShadowName = null;
+
     shadows = curtain.querySelectorAll('[data-shadow]');
 
-    window.clearTimeout(resetTimeout);
     timeline = new TimelineLite();
 
     if (shadows) {
       for (i = 0; i < shadows.length; i++) {
         (function(shadowName, sizeCoefficient) {
+          if (firstShadowName === null) {
+            firstShadowName = shadowName;
+          }
+
           timeline.fromTo(shadows[i], options.durations.fold / shadows.length, {
             width: 0
           }, {
@@ -392,6 +397,19 @@ var MagicCurtain = function(curtain) {
             ease: Power4.easeOut,
             onStart: function() {
               curtain.classList.add('state-' + shadowName);
+
+              //noinspection JSReferencingMutableVariableFromClosure
+              if (shadowName === firstShadowName) {
+                curtain.classList.add('state-0');
+              }
+            },
+            onReverseComplete: function() {
+              curtain.classList.remove('state-' + shadowName);
+
+              //noinspection JSReferencingMutableVariableFromClosure
+              if (shadowName === firstShadowName) {
+                curtain.classList.remove('state-0');
+              }
             }
           });
         })(
@@ -416,15 +434,11 @@ var MagicCurtain = function(curtain) {
       timeline.reverse();
     }
 
-    curtain.classList.add('state-0');
-
-    timeline.duration(options.durations.fold / shadows.length);
+    timeline.duration(options.durations.fold);
     timeline.restart();
   };
 
   this.unfold = function() {
-    var shadowName;
-
     if (!initialised) {
       console.error('Timeline not initialised.');
       return;
@@ -432,16 +446,6 @@ var MagicCurtain = function(curtain) {
 
     timeline.duration(options.durations.unfold);
     timeline.reverse();
-
-    resetTimeout = window.setTimeout(function() {
-      curtain.classList.remove('state-0');
-
-      for (i = 0; i < shadows.length; i++) {
-        shadowName = shadows[i].getAttribute('data-shadow');
-
-        curtain.classList.remove('state-' + shadowName);
-      }
-    }, options.durations.unfold * 1000 / 4);
   };
 };
 
