@@ -353,6 +353,12 @@ var magicControls = function() {
     }
   };
 
+  module.initCurtainCloseTrigger = function(curtain, close) {
+    close.addEventListener('click', function() {
+      curtain.unfold();
+    });
+  };
+
   return module;
 }();
 
@@ -472,3 +478,4 @@ magicControls.initRadial();
 var commonCurtain = new MagicCurtain(document.querySelector('#common-curtain'));
 commonCurtain.init();
 magicControls.initCurtain(commonCurtain);
+magicControls.initCurtainCloseTrigger(commonCurtain, document.querySelector('#common-curtain-close-trigger'));

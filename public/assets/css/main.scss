@@ -348,10 +348,19 @@ div.magic-curtain {
     height: 100%;
   }
 
+  div.close {
+    position: absolute;
+    right: -50px;
+    top: 20px;
+    font-size: 5em;
+    cursor: default;
+    visibility: hidden;
+    pointer-events: none;
+    transition: 500ms right;
+  }
+
   &.state-0 {
-    div.disk {
-      z-index: 100;
-    }
+    //
   }
 
   &.state-a {
@@ -375,6 +384,13 @@ div.magic-curtain {
   &.state-d {
     div.shadow-d {
       z-index: 40;
+    }
+
+    div.close {
+      right: 70px;
+      z-index: 100;
+      visibility: visible;
+      pointer-events: auto;
     }
   }
 
