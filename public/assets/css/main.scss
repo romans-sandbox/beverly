@@ -480,6 +480,14 @@ div.right-page-controls {
   }
 }
 
+div.lipstick-colors-container {
+  position: absolute;
+  z-index: 1;
+  left: 46%;
+  bottom: 100px;
+  transform: translateX(-50%);
+}
+
 // animations
 
 @keyframes lips-control-shadow-upper {
