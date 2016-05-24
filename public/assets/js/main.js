@@ -3,9 +3,10 @@ var lipsDrawing = function() {
 
   var options = {
     controlBoxSize: 38,
-    curvatureOffset: 100,
+    upperCurvatureOffset: 100,
+    lowerCurvatureOffset: 70,
     threshold: 0.9,
-    pointDiff: 0.05,
+    pointDiff: 0.005,
     durations: {
       controlReturn: 0.5
     }
@@ -29,12 +30,14 @@ var lipsDrawing = function() {
   module.query = function() {
     v.container = document.querySelector('#lips-drawing-container');
     v.upperControl = document.querySelector('#lips-drawing-upper-control');
+    v.upperControlArrow = v.upperControl.querySelector('div.arrow');
     v.upperTrajectory = document.querySelector('#lips-drawing-upper-trajectory');
     v.lowerControl = document.querySelector('#lips-drawing-lower-control');
+    v.lowerControlArrow = v.lowerControl.querySelector('div.arrow');
     v.lowerTrajectory = document.querySelector('#lips-drawing-lower-trajectory');
   };
 
-  function calculateTrajectoryPoint(t, prev) {
+  function calculateTrajectoryPoint(t, prev, upper) {
     var containerBox, availWidth, point, prevPoint;
 
     containerBox = v.container.getBoundingClientRect();
@@ -42,20 +45,20 @@ var lipsDrawing = function() {
 
     point = {
       x: t * availWidth,
-      y: 2 * t * (1 - t) * (-options.curvatureOffset),
+      y: 2 * t * (1 - t) * (upper ? -options.upperCurvatureOffset : -options.lowerCurvatureOffset),
       angle: null
     };
 
     if (!prev) {
       if (t < options.pointDiff) {
-        prevPoint = calculateTrajectoryPoint(t + options.pointDiff, true);
+        prevPoint = calculateTrajectoryPoint(t + options.pointDiff, true, upper);
         point.angle = Math.atan2(prevPoint.y - point.y, prevPoint.x - point.x);
       } else {
-        prevPoint = calculateTrajectoryPoint(t - options.pointDiff, true);
+        prevPoint = calculateTrajectoryPoint(t - options.pointDiff, true, upper);
         point.angle = Math.atan2(point.y - prevPoint.y, point.x - prevPoint.x);
       }
 
-      point.angle /= 2 * Math.PI / 360;
+      point.angle /= -2 * Math.PI / 360;
     }
 
     return point;
@@ -98,6 +101,14 @@ var lipsDrawing = function() {
   }
 
   module.initUpper = function() {
+    (function() {
+      var point;
+
+      point = calculateTrajectoryPoint(0, null, true);
+
+      v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
+    })();
+
     v.upperControl.addEventListener('mousedown', function(ev) {
       ev.preventDefault();
 
@@ -118,10 +129,11 @@ var lipsDrawing = function() {
           TweenLite.to(o, options.durations.controlReturn, {
             x: 0,
             onUpdate: function() {
-              point = calculateTrajectoryPoint(o.x);
+              point = calculateTrajectoryPoint(o.x, null, true);
 
               v.upperControl.style.right = point.x + 'px';
               v.upperControl.style.top = point.y + 'px';
+              v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
             },
             onComplete: function() {
               status.upper.prevX = 0;
@@ -146,15 +158,24 @@ var lipsDrawing = function() {
         status.upper.prevX = upperX;
         status.upper.progress = upperX / availWidth;
 
-        point = calculateTrajectoryPoint(upperX / availWidth);
+        point = calculateTrajectoryPoint(upperX / availWidth, null, true);
 
         v.upperControl.style.right = point.x + 'px';
         v.upperControl.style.top = point.y + 'px';
+        v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
       }
     }, false);
   };
 
   module.initLower = function() {
+    (function() {
+      var point;
+
+      point = calculateTrajectoryPoint(0, null, false);
+
+      v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
+    })();
+
     v.lowerControl.addEventListener('mousedown', function(ev) {
       ev.preventDefault();
 
@@ -175,10 +196,11 @@ var lipsDrawing = function() {
           TweenLite.to(o, options.durations.controlReturn, {
             x: 0,
             onUpdate: function() {
-              point = calculateTrajectoryPoint(o.x);
+              point = calculateTrajectoryPoint(o.x, null, false);
 
               v.lowerControl.style.left = point.x + 'px';
               v.lowerControl.style.bottom = point.y + 'px';
+              v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
             },
             onComplete: function() {
               status.lower.prevX = 0;
@@ -203,10 +225,11 @@ var lipsDrawing = function() {
         status.lower.prevX = lowerX;
         status.lower.progress = lowerX / availWidth;
 
-        point = calculateTrajectoryPoint(lowerX / availWidth);
+        point = calculateTrajectoryPoint(lowerX / availWidth, null, false);
 
         v.lowerControl.style.left = point.x + 'px';
         v.lowerControl.style.bottom = point.y + 'px';
+        v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
       }
     }, false);
   };

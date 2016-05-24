@@ -79,21 +79,25 @@
   </div>
   <div class="lips-drawing-container" id="lips-drawing-container">
     <div class="control upper" id="lips-drawing-upper-control">
-      <div class="main"></div>
+      <div class="main"><div class="arrow"></div></div>
       <div class="shadow"></div>
     </div>
     <div class="trajectory upper" id="lips-drawing-upper-trajectory">
       <svg xmlns="http://www.w3.org/2000/svg" width="264" height="100">
-        <path d="M0,50 C0,50 132,-60 264,50" stroke-dasharray="4 10"></path>
+        <g transform="translate(3, 2)">
+          <path d="M0,50 C0,50 126,-60 258,50"></path>
+        </g>
       </svg>
     </div>
     <div class="control lower" id="lips-drawing-lower-control">
-      <div class="main"></div>
+      <div class="main"><div class="arrow"></div></div>
       <div class="shadow"></div>
     </div>
     <div class="trajectory lower" id="lips-drawing-lower-trajectory">
       <svg xmlns="http://www.w3.org/2000/svg" width="264" height="100">
-        <path d="M0,0 C0,0 132,120 264,0" stroke-dasharray="4 11"></path>
+        <g transform="translate(3, 4)">
+          <path d="M0,0 C0,0 126,76 258,0"></path>
+        </g>
       </svg>
     </div>
   </div>
