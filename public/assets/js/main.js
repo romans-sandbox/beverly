@@ -314,65 +314,37 @@ var magicControls = function() {
     }
   };
 
-  // left to right
   module.initCurtain = function(curtain, context) {
-    var wrappers, shadows, timeline, i;
+    var wrappers, i;
 
     if (!context) {
       context = document;
     }
 
     wrappers = context.querySelectorAll('[data-magic-control="curtain"]');
-    shadows = curtain.querySelectorAll('[data-shadow]');
 
     if (wrappers) {
       for (i = 0; i < wrappers.length; i++) {
         (function(wrapper, duration) {
-          var i, resetTimeout;
-
-          wrapper.addEventListener('mousedown', function() {
-            window.clearTimeout(resetTimeout);
-
-            curtain.classList.add('state-0');
-
-            timeline = new TimelineLite();
-
-            if (shadows) {
-              for (i = 0; i < shadows.length; i++) {
-                (function(shadowName, sizeCoefficient) {
-                  timeline.fromTo(shadows[i], duration / shadows.length, {
-                    width: 0
-                  }, {
-                    width: sizeCoefficient * 100 + '%',
-                    ease: Power4.easeOut,
-                    onStart: function() {
-                      curtain.classList.add('state-' + shadowName);
-                    }
-                  });
-                })(
-                  shadows[i].getAttribute('data-shadow'),
-                  2 / 3 + 1 / 3 / (shadows.length - 1) * i
-                );
+          if (wrapper.hasAttribute('data-fold')) {
+            wrapper.addEventListener('click', function() {
+              if (duration) {
+                curtain.overrideFoldDuration(duration);
               }
-            }
-          });
 
-          wrapper.addEventListener('mouseup', function() {
-            var shadowName;
+              curtain.fold();
+            });
+          }
 
-            timeline.duration(duration / 4);
-            timeline.reverse();
-
-            resetTimeout = window.setTimeout(function() {
-              curtain.classList.remove('state-0');
-
-              for (i = 0; i < shadows.length; i++) {
-                shadowName = shadows[i].getAttribute('data-shadow');
-
-                curtain.classList.remove('state-' + shadowName);
+          if (wrapper.hasAttribute('data-unfold')) {
+            wrapper.addEventListener('click', function() {
+              if (duration) {
+                curtain.overrideUnfoldDuration(duration);
               }
-            }, duration * 1000 / 4);
-          });
+
+              curtain.unfold();
+            });
+          }
         })(
           wrappers[i],
           +wrappers[i].getAttribute('data-duration')
@@ -386,6 +358,95 @@ var magicControls = function() {
 
 ////
 
+var MagicCurtain = function(curtain) {
+  var options = {
+    durations: {
+      fold: 1, // default, in seconds
+      unfold: 0.25 // default, in seconds
+    }
+  };
+
+  var initialised = false, timeline, shadows, resetTimeout;
+
+  this.overrideFoldDuration = function(duration) {
+    options.durations.fold = duration;
+  };
+
+  this.overrideUnfoldDuration = function(duration) {
+    options.durations.unfold = duration;
+  };
+
+  this.init = function() {
+    shadows = curtain.querySelectorAll('[data-shadow]');
+
+    window.clearTimeout(resetTimeout);
+    timeline = new TimelineLite();
+
+    if (shadows) {
+      for (i = 0; i < shadows.length; i++) {
+        (function(shadowName, sizeCoefficient) {
+          timeline.fromTo(shadows[i], options.durations.fold / shadows.length, {
+            width: 0
+          }, {
+            width: sizeCoefficient * 100 + '%',
+            ease: Power4.easeOut,
+            onStart: function() {
+              curtain.classList.add('state-' + shadowName);
+            }
+          });
+        })(
+          shadows[i].getAttribute('data-shadow'),
+          2 / 3 + 1 / 3 / (shadows.length - 1) * i
+        );
+      }
+    }
+
+    timeline.pause();
+
+    initialised = true;
+  };
+
+  this.fold = function() {
+    if (!initialised) {
+      console.error('Timeline not initialised.');
+      return;
+    }
+
+    if (timeline.reversed()) {
+      timeline.reverse();
+    }
+
+    curtain.classList.add('state-0');
+
+    timeline.duration(options.durations.fold / shadows.length);
+    timeline.restart();
+  };
+
+  this.unfold = function() {
+    var shadowName;
+
+    if (!initialised) {
+      console.error('Timeline not initialised.');
+      return;
+    }
+
+    timeline.duration(options.durations.unfold);
+    timeline.reverse();
+
+    resetTimeout = window.setTimeout(function() {
+      curtain.classList.remove('state-0');
+
+      for (i = 0; i < shadows.length; i++) {
+        shadowName = shadows[i].getAttribute('data-shadow');
+
+        curtain.classList.remove('state-' + shadowName);
+      }
+    }, options.durations.unfold * 1000 / 4);
+  };
+};
+
+////
+
 lipsDrawing.query();
 lipsDrawing.initUpper();
 lipsDrawing.initLower();
@@ -393,5 +454,7 @@ lipsDrawing.initLower();
 ///
 
 magicControls.initRadial();
-magicControls.initCurtain(document.querySelector('#common-curtain'));
 
+var commonCurtain = new MagicCurtain(document.querySelector('#common-curtain'));
+commonCurtain.init();
+magicControls.initCurtain(commonCurtain);
