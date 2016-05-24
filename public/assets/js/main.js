@@ -219,22 +219,22 @@ var magicControls = function() {
 
   var options = {};
 
-  module.init = function(context) {
+  module.initRadial = function(context) {
     var wrappers, i;
 
     if (!context) {
       context = document;
     }
 
-    wrappers = context.querySelectorAll('[data-magic-control]');
+    wrappers = context.querySelectorAll('[data-magic-control="radial"]');
 
     if (wrappers) {
       for (i = 0; i < wrappers.length; i++) {
         (function(wrapper, control, shadows, duration) {
-          var wrapperBox, targetRadius, t1;
+          var controlBox, targetRadius, timeline;
           var i, resetTimeout;
 
-          wrapperBox = control.getBoundingClientRect();
+          controlBox = control.getBoundingClientRect();
 
           wrapper.addEventListener('mousedown', function() {
             window.clearTimeout(resetTimeout);
@@ -242,53 +242,57 @@ var magicControls = function() {
             targetRadius = Math.sqrt(
                 Math.pow(
                   Math.max(
-                    wrapperBox.left,
-                    window.innerWidth - wrapperBox.left - wrapperBox.width
+                    controlBox.left,
+                    window.innerWidth - controlBox.left - controlBox.width
                   ),
                   2
                 ) +
                 Math.pow(
                   Math.max(
-                    wrapperBox.top,
-                    window.innerHeight - wrapperBox.top - wrapperBox.height
+                    controlBox.top,
+                    window.innerHeight - controlBox.top - controlBox.height
                   ),
                   2
                 )
-              ) + wrapperBox.width;
+              ) + controlBox.width;
 
             wrapper.classList.add('state-0');
 
-            t1 = new TimelineLite();
+            timeline = new TimelineLite();
 
-            for (i = 0; i < shadows.length; i++) {
-              (function(shadowName, radius) {
-                t1.fromTo(shadows[i], duration / shadows.length, {
-                  left: wrapperBox.width / 2,
-                  top: wrapperBox.height / 2,
-                  width: 0,
-                  height: 0
-                }, {
-                  width: radius * 2,
-                  height: radius * 2,
-                  left: -radius + wrapperBox.width / 2,
-                  top: -radius + wrapperBox.height / 2,
-                  ease: Power4.easeOut,
-                  onStart: function() {
-                    wrapper.classList.add('state-' + shadowName);
-                  }
-                });
-              })(
-                shadows[i].getAttribute('data-shadow'),
-                i === 0
-                  ? wrapperBox.width / 2 * 1.25
-                  : targetRadius / Math.pow(shadows.length, 2) * Math.pow(i + 1, 2)
-              );
+            if (shadows) {
+              for (i = 0; i < shadows.length; i++) {
+                (function(shadowName, radius) {
+                  timeline.fromTo(shadows[i], duration / shadows.length, {
+                    left: controlBox.width / 2,
+                    top: controlBox.height / 2,
+                    width: 0,
+                    height: 0
+                  }, {
+                    width: radius * 2,
+                    height: radius * 2,
+                    left: -radius + controlBox.width / 2,
+                    top: -radius + controlBox.height / 2,
+                    ease: Power4.easeOut,
+                    onStart: function() {
+                      wrapper.classList.add('state-' + shadowName);
+                    }
+                  });
+                })(
+                  shadows[i].getAttribute('data-shadow'),
+                  i === 0
+                    ? controlBox.width / 2 * 1.25
+                    : targetRadius / Math.pow(shadows.length, 2) * Math.pow(i + 1, 2)
+                );
+              }
             }
           });
 
           wrapper.addEventListener('mouseup', function() {
-            t1.duration(duration / 4);
-            t1.reverse();
+            var shadowName;
+
+            timeline.duration(duration / 4);
+            timeline.reverse();
 
             resetTimeout = window.setTimeout(function() {
               wrapper.classList.remove('state-0');
@@ -310,6 +314,73 @@ var magicControls = function() {
     }
   };
 
+  // left to right
+  module.initCurtain = function(curtain, context) {
+    var wrappers, shadows, timeline, i;
+
+    if (!context) {
+      context = document;
+    }
+
+    wrappers = context.querySelectorAll('[data-magic-control="curtain"]');
+    shadows = curtain.querySelectorAll('[data-shadow]');
+
+    if (wrappers) {
+      for (i = 0; i < wrappers.length; i++) {
+        (function(wrapper, duration) {
+          var i, resetTimeout;
+
+          wrapper.addEventListener('mousedown', function() {
+            window.clearTimeout(resetTimeout);
+
+            curtain.classList.add('state-0');
+
+            timeline = new TimelineLite();
+
+            if (shadows) {
+              for (i = 0; i < shadows.length; i++) {
+                (function(shadowName, size) {
+                  timeline.fromTo(shadows[i], duration / shadows.length, {
+                    width: 0
+                  }, {
+                    width: size * 100 + '%',
+                    ease: Power4.easeOut,
+                    onStart: function() {
+                      curtain.classList.add('state-' + shadowName);
+                    }
+                  });
+                })(
+                  shadows[i].getAttribute('data-shadow'),
+                  1 / Math.pow(shadows.length, 2) * Math.pow(i + 1, 2)
+                );
+              }
+            }
+          });
+
+          wrapper.addEventListener('mouseup', function() {
+            var shadowName;
+
+            timeline.duration(duration / 4);
+            timeline.reverse();
+
+            resetTimeout = window.setTimeout(function() {
+              curtain.classList.remove('state-0');
+
+              for (i = 0; i < shadows.length; i++) {
+                shadowName = shadows[i].getAttribute('data-shadow');
+
+                curtain.classList.remove('state-' + shadowName);
+              }
+            }, duration * 1000 / 4);
+          });
+        })(
+          wrappers[i],
+          +wrappers[i].getAttribute('data-duration')
+        );
+      }
+    }
+  };
+
   return module;
 }();
 
@@ -321,4 +392,6 @@ lipsDrawing.initLower();
 
 ///
 
-magicControls.init();
+magicControls.initRadial();
+magicControls.initCurtain(document.querySelector('#common-curtain'));
+

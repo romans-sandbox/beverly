@@ -328,6 +328,75 @@ div.magic-disk {
   }
 }
 
+div.magic-curtain {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+
+  &.state-0 {
+    width: 100%;
+  }
+
+  div.shadow-a,
+  div.shadow-b,
+  div.shadow-c,
+  div.shadow-d {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+  }
+
+  &.state-0 {
+    div.disk {
+      z-index: 100;
+    }
+  }
+
+  &.state-a {
+    div.shadow-a {
+      z-index: 10;
+    }
+  }
+
+  &.state-b {
+    div.shadow-b {
+      z-index: 20;
+    }
+  }
+
+  &.state-c {
+    div.shadow-c {
+      z-index: 30;
+    }
+  }
+
+  &.state-d {
+    div.shadow-d {
+      z-index: 40;
+    }
+  }
+
+  &.style-1 {
+    div.shadow-d {
+      background: $km1;
+    }
+
+    div.shadow-a {
+      background: rgba($km1, 0.25);
+    }
+
+    div.shadow-b {
+      background: rgba($km1, 0.5);
+    }
+
+    div.shadow-c {
+      background: rgba($km1, 0.75);
+    }
+  }
+}
+
 // animations
 
 @keyframes lips-control-shadow-upper {
