@@ -451,6 +451,20 @@ div.nullmighty-symbol-small {
   height: 24px;
 }
 
+div.left-page-controls {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+
+  div.simple-button {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
 div.right-page-controls {
   position: absolute;
   right: 20px;
