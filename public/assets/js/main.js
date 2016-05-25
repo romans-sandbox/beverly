@@ -491,8 +491,8 @@ var MagicCurtain = function(curtain) {
 var FancyContent = function(wrapper) {
   var options = {
     durations: {
-      folding: 0.6,
-      unfolding: 0.3
+      folding: 0.5,
+      unfolding: 0.5
     }
   };
 
@@ -546,7 +546,7 @@ var FancyContent = function(wrapper) {
     timeline.duration(options.durations.unfolding);
     timeline.reverse();
   };
-  
+
   this.wrapper = wrapper;
 };
 
