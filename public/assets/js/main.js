@@ -620,6 +620,10 @@ FancyContent.initWrappers = function(context) {
 FancyContent.initWrappers();
 
 var abhIntroLogo = new FancyContent(document.querySelector('#my-fancy-image'));
+var introText = new FancyContent(document.querySelector('#intro-fancy-text'));
+var introGetStartedContainer = document.querySelector('#intro-get-started-container');
+var pageLeftControls = document.querySelector('#page-left-controls');
+var pageRightControls = document.querySelector('#page-right-controls');
 
 window.setTimeout(function() {
   abhIntroLogo.wrapper.parentNode.classList.add('visible');
@@ -627,5 +631,17 @@ window.setTimeout(function() {
 
   window.setTimeout(function() {
     abhIntroLogo.unfold();
+
+    window.setTimeout(function() {
+      introText.wrapper.parentNode.classList.add('visible');
+      introText.fold();
+
+      window.setTimeout(function() {
+        introText.wrapper.parentNode.classList.add('up');
+        introGetStartedContainer.classList.add('visible');
+        pageLeftControls.classList.add('visible');
+        pageRightControls.classList.add('visible');
+      }, 500);
+    }, 2000);
   }, 2000);
-}, 2000);
+}, 1000);

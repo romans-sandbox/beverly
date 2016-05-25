@@ -35,8 +35,13 @@ div.intro-background {
 div.intro-get-started-container {
   position: absolute;
   left: 50%;
-  bottom: 150px;
+  bottom: -60px;
   transform: translateX(-50%);
+  transition: 1s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  &.visible {
+    bottom: 300px;
+  }
 }
 
 div.intro-abh-container {
@@ -56,6 +61,56 @@ div.abh-large {
   background-size: 420px 243px;
   width: 420px;
   height: 243px;
+}
+
+div.intro-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  width: 700px;
+  text-align: center;
+  transition: 1s top cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  div.fancy-text {
+    div.main,
+    div.shadow-a,
+    div.shadow-b {
+      width: 700px;
+      text-align: center;
+      font-size: 4em;
+      letter-spacing: 0.1em;
+
+      div {
+        margin-top: 5px;
+        font-size: 1.5em;
+      }
+    }
+
+    div.main,
+    div.shadow-a {
+      left: 50%;
+    }
+
+    div.shadow-a {
+      transform: translateX(-50%);
+    }
+
+    &.ready {
+      div.main {
+        transform: translateX(-50%);
+      }
+    }
+  }
+
+  &.visible {
+    opacity: 1;
+  }
+
+  &.up {
+    top: 300px;
+  }
 }
 
 div.lips-drawing-container {
@@ -513,7 +568,12 @@ div.nullmighty-symbol-small {
 div.left-page-controls {
   position: absolute;
   left: 20px;
-  bottom: 20px;
+  bottom: -25px;
+  transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  &.visible {
+    bottom: 20px;
+  }
 
   div.simple-button {
     margin-right: 10px;
@@ -527,7 +587,12 @@ div.left-page-controls {
 div.right-page-controls {
   position: absolute;
   right: 20px;
-  bottom: 20px;
+  bottom: -25px;
+  transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  &.visible {
+    bottom: 20px;
+  }
 
   div.abh-horizontal-small,
   div.nullmighty-symbol-small {
@@ -575,6 +640,17 @@ div.fancy-text {
     div.shadow-b,
     div.main {
       overflow: hidden;
+    }
+  }
+
+  &.style-0 {
+    div.main {
+      color: $k1;
+    }
+
+    div.shadow-a,
+    div.shadow-b {
+      color: rgba($k1, 0.25);
     }
   }
 
