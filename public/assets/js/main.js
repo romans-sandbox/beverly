@@ -583,34 +583,35 @@ FancyText.initWrappers = function(context) {
 
 ////
 
-lipsDrawing.query();
-lipsDrawing.initUpper();
-lipsDrawing.initLower();
+// lipsDrawing.query();
+// lipsDrawing.initUpper();
+// lipsDrawing.initLower();
 
 ///
 
-magicControls.initRadial();
+// magicControls.initRadial();
 
-var commonCurtain = new MagicCurtain(document.querySelector('#common-curtain'));
-commonCurtain.init();
-magicControls.initCurtain(commonCurtain);
-magicControls.initCurtainCloseTrigger(commonCurtain, document.querySelector('#common-curtain-close-trigger'));
+// var commonCurtain = new MagicCurtain(document.querySelector('#common-curtain'));
+// commonCurtain.init();
+// magicControls.initCurtain(commonCurtain);
+// magicControls.initCurtainCloseTrigger(commonCurtain, document.querySelector('#common-curtain-close-trigger'));
 
 ///
 
-FancyText.initWrappers();
+// FancyText.initWrappers();
+//
+// var myFancyText = new FancyText(document.querySelector('#my-fancy-text'));
+// myFancyText.fold();
+//
+// window.setTimeout(function() {
+//   myFancyText.unfold();
+//
+//   window.setTimeout(function() {
+//     myFancyText.fold();
+//
+//     window.setTimeout(function() {
+//       myFancyText.unfold();
+//     }, 2000);
+//   }, 2000);
+// }, 2000);
 
-var myFancyText = new FancyText(document.querySelector('#my-fancy-text'));
-myFancyText.fold();
-
-window.setTimeout(function() {
-  myFancyText.unfold();
-
-  window.setTimeout(function() {
-    myFancyText.fold();
-
-    window.setTimeout(function() {
-      myFancyText.unfold();
-    }, 2000);
-  }, 2000);
-}, 2000);
