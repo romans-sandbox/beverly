@@ -39,11 +39,19 @@ div.intro-get-started-container {
   transform: translateX(-50%);
 }
 
-div.intro-abh {
+div.intro-abh-container {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  opacity: 0;
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+div.abh-large {
   background: url($img-dir + '/abh-large-light.png');
   background-size: 420px 243px;
   width: 420px;
@@ -633,6 +641,34 @@ div.fancy-text {
     div.shadow-a,
     div.shadow-b {
       color: rgba($km6, 0.25);
+    }
+  }
+}
+
+div.fancy-image {
+  position: relative;
+
+  div.shadow-a,
+  div.shadow-b {
+    display: none;
+    opacity: 0.25;
+  }
+
+  &.ready {
+    div.shadow-a,
+    div.shadow-b {
+      display: block;
+    }
+
+    div.main,
+    div.shadow-a {
+      position: absolute;
+    }
+
+    div.shadow-a,
+    div.shadow-b,
+    div.main {
+      overflow: hidden;
     }
   }
 }

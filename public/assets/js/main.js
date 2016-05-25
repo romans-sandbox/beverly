@@ -488,7 +488,7 @@ var MagicCurtain = function(curtain) {
   };
 };
 
-var FancyText = function(wrapper) {
+var FancyContent = function(wrapper) {
   var options = {
     durations: {
       folding: 0.6,
@@ -546,16 +546,18 @@ var FancyText = function(wrapper) {
     timeline.duration(options.durations.unfolding);
     timeline.reverse();
   };
+  
+  this.wrapper = wrapper;
 };
 
-FancyText.initWrappers = function(context) {
+FancyContent.initWrappers = function(context) {
   var i, wrappers;
 
   if (!context) {
     context = document;
   }
 
-  wrappers = context.querySelectorAll('[data-fancy-text]');
+  wrappers = context.querySelectorAll('[data-fancy-content]');
 
   if (wrappers) {
     for (i = 0; i < wrappers.length; i++) {
@@ -598,20 +600,32 @@ FancyText.initWrappers = function(context) {
 
 ///
 
-// FancyText.initWrappers();
+// FancyContent.initWrappers();
 //
-// var myFancyText = new FancyText(document.querySelector('#my-fancy-text'));
-// myFancyText.fold();
+// var myFancyContent = new FancyContent(document.querySelector('#my-fancy-content'));
+// myFancyContent.fold();
 //
 // window.setTimeout(function() {
-//   myFancyText.unfold();
+//   myFancyContent.unfold();
 //
 //   window.setTimeout(function() {
-//     myFancyText.fold();
+//     myFancyContent.fold();
 //
 //     window.setTimeout(function() {
-//       myFancyText.unfold();
+//       myFancyContent.unfold();
 //     }, 2000);
 //   }, 2000);
 // }, 2000);
 
+FancyContent.initWrappers();
+
+var abhIntroLogo = new FancyContent(document.querySelector('#my-fancy-image'));
+
+window.setTimeout(function() {
+  abhIntroLogo.wrapper.parentNode.classList.add('visible');
+  abhIntroLogo.fold();
+
+  window.setTimeout(function() {
+    abhIntroLogo.unfold();
+  }, 2000);
+}, 2000);
