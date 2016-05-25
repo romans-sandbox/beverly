@@ -39,6 +39,17 @@ div.intro-get-started-container {
   transform: translateX(-50%);
 }
 
+div.intro-abh {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: url($img-dir + '/abh-large-light.png');
+  background-size: 420px 243px;
+  width: 420px;
+  height: 243px;
+}
+
 div.lips-drawing-container {
   position: absolute;
   z-index: 0;
