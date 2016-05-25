@@ -32,6 +32,13 @@ div.intro-background {
   height: 100%;
 }
 
+div.intro-get-started-container {
+  position: absolute;
+  left: 50%;
+  bottom: 150px;
+  transform: translateX(-50%);
+}
+
 div.lips-drawing-container {
   position: absolute;
   z-index: 0;
@@ -141,7 +148,8 @@ div.simple-button {
   background: $k2;
 
   button.control {
-    padding: 6px 12px;
+    display: block;
+    padding: 6px 15px;
     margin: 0;
     text-transform: uppercase;
     background: transparent;
@@ -166,14 +174,23 @@ div.simple-button {
     }
   }
 
+  &.style-1 {
+    background: $k1;
+
+    button.control {
+      color: $k2;
+    }
+  }
+
   &.large {
     button.control {
       font-size: 1.5em;
+      padding: 12px 24px;
     }
 
     &:hover {
       button.control {
-        box-shadow: inset 0 -41px 0 lighten($k2, 25%);
+        box-shadow: inset 0 -53px 0 lighten($k2, 25%);
       }
     }
   }
