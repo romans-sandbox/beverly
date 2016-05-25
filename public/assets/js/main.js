@@ -488,6 +488,99 @@ var MagicCurtain = function(curtain) {
   };
 };
 
+var FancyText = function(wrapper) {
+  var options = {
+    durations: {
+      folding: 0.6,
+      unfolding: 0.3
+    }
+  };
+
+  var wrapperBox, main, shadowA, shadowB, timeline;
+
+  wrapperBox = wrapper.getBoundingClientRect();
+
+  main = wrapper.querySelector('div.main');
+  shadowA = wrapper.querySelector('div.shadow-a');
+  shadowB = wrapper.querySelector('div.shadow-b');
+
+  wrapper.style.height = wrapperBox.height + 'px';
+  main.style.height = '0';
+  shadowA.style.height = '0';
+  shadowB.style.height = '0';
+
+  wrapper.classList.add('ready');
+
+  timeline = new TimelineLite();
+
+  timeline.to(shadowA, options.durations.folding / 3, {
+    height: wrapperBox.height
+  });
+
+  timeline.to(shadowB, options.durations.folding / 3, {
+    height: wrapperBox.height
+  });
+
+  timeline.to(main, options.durations.folding / 3, {
+    height: wrapperBox.height,
+    onComplete: function() {
+      wrapper.classList.remove('ready');
+    }
+  });
+
+  timeline.pause();
+
+  this.fold = function() {
+    if (timeline.reversed()) {
+      timeline.reverse();
+      wrapper.classList.add('ready');
+    }
+
+    timeline.duration(options.durations.folding);
+    timeline.play();
+  };
+
+  this.unfold = function() {
+    wrapper.classList.add('ready');
+
+    timeline.duration(options.durations.unfolding);
+    timeline.reverse();
+  };
+};
+
+FancyText.initWrappers = function(context) {
+  var i, wrappers;
+
+  if (!context) {
+    context = document;
+  }
+
+  wrappers = context.querySelectorAll('[data-fancy-text]');
+
+  if (wrappers) {
+    for (i = 0; i < wrappers.length; i++) {
+      (function(wrapper, main, shadowA, shadowB) {
+        shadowA = document.createElement('div');
+
+        shadowA.innerHTML = main.innerHTML;
+        shadowA.classList.add('shadow-a');
+
+        wrapper.appendChild(shadowA);
+
+        shadowB = document.createElement('div');
+
+        shadowB.innerHTML = main.innerHTML;
+        shadowB.classList.add('shadow-b');
+
+        wrapper.appendChild(shadowB);
+      })(
+        wrappers[i],
+        wrappers[i].querySelector('div.main')
+      );
+    }
+  }
+};
+
 ////
 
 lipsDrawing.query();
@@ -502,3 +595,22 @@ var commonCurtain = new MagicCurtain(document.querySelector('#common-curtain'));
 commonCurtain.init();
 magicControls.initCurtain(commonCurtain);
 magicControls.initCurtainCloseTrigger(commonCurtain, document.querySelector('#common-curtain-close-trigger'));
+
+///
+
+FancyText.initWrappers();
+
+var myFancyText = new FancyText(document.querySelector('#my-fancy-text'));
+myFancyText.fold();
+
+window.setTimeout(function() {
+  myFancyText.unfold();
+
+  window.setTimeout(function() {
+    myFancyText.fold();
+
+    window.setTimeout(function() {
+      myFancyText.unfold();
+    }, 2000);
+  }, 2000);
+}, 2000);

@@ -511,6 +511,104 @@ div.lipstick-colors-container {
   transform: translateX(-50%);
 }
 
+div.fancy-text {
+  position: relative;
+
+  div.main {
+    color: $k2;
+  }
+
+  div.shadow-a,
+  div.shadow-b {
+    display: none;
+    color: rgba($k2, 0.25);
+  }
+
+  &.ready {
+    div.shadow-a,
+    div.shadow-b {
+      display: block;
+    }
+
+    div.main,
+    div.shadow-a {
+      position: absolute;
+    }
+
+    div.shadow-a,
+    div.shadow-b,
+    div.main {
+      overflow: hidden;
+    }
+  }
+
+  &.style-1 {
+    div.main {
+      color: $km1;
+    }
+
+    div.shadow-a,
+    div.shadow-b {
+      color: rgba($km1, 0.25);
+    }
+  }
+
+  &.style-2 {
+    div.main {
+      color: $km2;
+    }
+
+    div.shadow-a,
+    div.shadow-b {
+      color: rgba($km2, 0.25);
+    }
+  }
+
+  &.style-3 {
+    div.main {
+      color: $km3;
+    }
+
+    div.shadow-a,
+    div.shadow-b {
+      color: rgba($km3, 0.25);
+    }
+  }
+
+  &.style-4 {
+    div.main {
+      color: $km4;
+    }
+
+    div.shadow-a,
+    div.shadow-b {
+      color: rgba($km4, 0.25);
+    }
+  }
+
+  &.style-5 {
+    div.main {
+      color: $km5;
+    }
+
+    div.shadow-a,
+    div.shadow-b {
+      color: rgba($km5, 0.25);
+    }
+  }
+
+  &.style-6 {
+    div.main {
+      color: $km6;
+    }
+
+    div.shadow-a,
+    div.shadow-b {
+      color: rgba($km6, 0.25);
+    }
+  }
+}
+
 // animations
 
 @keyframes lips-control-shadow-upper {
