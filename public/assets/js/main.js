@@ -645,3 +645,18 @@ window.setTimeout(function() {
     }, 2000);
   }, 2000);
 }, 1000);
+
+var getStartedButton = document.querySelector('#get-started-button');
+var intro = document.querySelector('#intro');
+var mimicsBackground = document.querySelector('#mimics-background');
+
+getStartedButton.addEventListener('click', function() {
+  introText.wrapper.parentNode.classList.remove('up');
+  introGetStartedContainer.classList.remove('visible');
+  introText.unfold();
+
+  window.setTimeout(function() {
+    intro.classList.add('hidden');
+    mimicsBackground.classList.add('visible');
+  }, 1000);
+});

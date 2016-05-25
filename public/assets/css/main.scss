@@ -30,6 +30,10 @@ div.intro-background {
   background-size: cover;
   width: 100%;
   height: 100%;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 div.intro-get-started-container {
@@ -110,6 +114,16 @@ div.intro-text {
 
   &.up {
     top: 300px;
+  }
+}
+
+div.mimics-background {
+  display: none;
+  font-size: 10em;
+  color: $k2;
+
+  &.visible {
+    display: block;
   }
 }
 
