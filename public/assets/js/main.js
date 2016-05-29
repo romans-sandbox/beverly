@@ -683,85 +683,103 @@ FancyContent.initWrappers = function(context) {
 //   }, 2000);
 // }, 2000);
 
-FancyContent.initWrappers();
+var main = function() {
+  var module = {}, v = {};
 
-var commonCurtain = new MagicCurtain(document.querySelector('#common-curtain'));
-commonCurtain.init();
-magicControls.initCurtain(commonCurtain);
-magicControls.initCurtainCloseTrigger(commonCurtain, document.querySelector('#common-curtain-close-trigger'));
+  var commonCurtain, fancyIntroAbhLogo, fancyIntroText;
 
-var v = {};
+  module.query = function() {
+    v.commonCurtain = document.querySelector('#common-curtain');
+    v.commonCurtainCloseTrigger = document.querySelector('#common-curtain-close-trigger');
+    v.introCluster = document.querySelector('#intro-cluster');
+    v.introAbhLogo = document.querySelector('#intro-abh-logo');
+    v.introText = document.querySelector('#intro-text');
+    v.introGetStartedContainer = document.querySelector('#intro-get-started-container');
+    v.pageLeftControls = document.querySelector('#page-left-controls');
+    v.pageRightControls = document.querySelector('#page-right-controls');
+    v.introGetStartedButton = document.querySelector('#intro-get-started-button');
+    v.introCluster = document.querySelector('#intro-cluster');
+    v.mimicsCluster = document.querySelector('#mimics-cluster');
+    v.lipstickChoiceCluster = document.querySelector('#lipstick-choice-cluster');
+    v.lipsDrawingCluster = document.querySelector('#lips-drawing-cluster');
+    v.lipsDrawingUpperContainer = document.querySelector('#lips-drawing-upper-container');
+    v.lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
+  };
 
-v.introCluster = document.querySelector('#intro-cluster');
-v.introAbhLogo = document.querySelector('#intro-abh-logo');
-v.introText = document.querySelector('#intro-text');
-v.introGetStartedContainer = document.querySelector('#intro-get-started-container');
-v.pageLeftControls = document.querySelector('#page-left-controls');
-v.pageRightControls = document.querySelector('#page-right-controls');
-v.introGetStartedButton = document.querySelector('#intro-get-started-button');
-v.introCluster = document.querySelector('#intro-cluster');
-v.mimicsCluster = document.querySelector('#mimics-cluster');
-v.lipstickChoiceCluster = document.querySelector('#lipstick-choice-cluster');
-v.lipsDrawingCluster = document.querySelector('#lips-drawing-cluster');
-v.lipsDrawingUpperContainer = document.querySelector('#lips-drawing-upper-container');
-v.lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
+  module.init = function() {
+    commonCurtain = new MagicCurtain(v.commonCurtain);
+    commonCurtain.init();
+    magicControls.initCurtain(commonCurtain);
+    magicControls.initCurtainCloseTrigger(commonCurtain, v.commonCurtainCloseTrigger);
 
-var fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
-var fancyIntroText = new FancyContent(v.introText);
+    FancyContent.initWrappers();
 
-window.setTimeout(function() {
-  fancyIntroAbhLogo.wrapper.parentNode.classList.add('visible');
-  fancyIntroAbhLogo.fold();
+    fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
+    fancyIntroText = new FancyContent(v.introText);
+  };
 
-  window.setTimeout(function() {
-    fancyIntroAbhLogo.unfold();
-
+  module.run = function() {
     window.setTimeout(function() {
-      fancyIntroText.wrapper.parentNode.classList.add('visible');
-      fancyIntroText.fold();
+      fancyIntroAbhLogo.wrapper.parentNode.classList.add('visible');
+      fancyIntroAbhLogo.fold();
 
       window.setTimeout(function() {
-        fancyIntroText.wrapper.parentNode.classList.add('up');
-        v.introGetStartedContainer.classList.add('visible');
-        v.pageLeftControls.classList.add('visible');
-        v.pageRightControls.classList.add('visible');
-      }, 500);
-    }, 2000);
-  }, 2000);
-}, 1000);
+        fancyIntroAbhLogo.unfold();
 
-v.introGetStartedButton.addEventListener('click', function() {
-  v.introText.parentNode.classList.remove('up');
-  v.introGetStartedContainer.classList.remove('visible');
-  fancyIntroText.unfold();
+        window.setTimeout(function() {
+          fancyIntroText.wrapper.parentNode.classList.add('visible');
+          fancyIntroText.fold();
 
-  window.setTimeout(function() {
-    v.introCluster.classList.add('hidden');
-    v.mimicsCluster.classList.add('visible');
-
-    window.setTimeout(function() {
-      v.mimicsCluster.classList.remove('visible');
-
-      v.lipstickChoiceCluster.classList.add('visible');
-      magicControls.initRadial(v.lipstickChoiceCluster, 0.5, function() {
-        v.lipstickChoiceCluster.classList.remove('visible');
-        v.lipsDrawingCluster.classList.add('visible');
-
-        lipsDrawing.query();
-
-        v.lipsDrawingLowerContainer.classList.add('visible');
-
-        lipsDrawing.initLower(0.5, function() {
-          v.lipsDrawingLowerContainer.classList.remove('visible');
-          v.lipsDrawingUpperContainer.classList.add('visible');
-
-          lipsDrawing.initUpper(0.5, function() {
-            v.lipsDrawingUpperContainer.classList.remove('visible');
-
-            alert('What now?');
-          });
-        });
-      });
+          window.setTimeout(function() {
+            fancyIntroText.wrapper.parentNode.classList.add('up');
+            v.introGetStartedContainer.classList.add('visible');
+            v.pageLeftControls.classList.add('visible');
+            v.pageRightControls.classList.add('visible');
+          }, 500);
+        }, 2000);
+      }, 2000);
     }, 1000);
-  }, 1000);
-});
+
+    v.introGetStartedButton.addEventListener('click', function() {
+      v.introText.parentNode.classList.remove('up');
+      v.introGetStartedContainer.classList.remove('visible');
+      fancyIntroText.unfold();
+
+      window.setTimeout(function() {
+        v.introCluster.classList.add('hidden');
+        v.mimicsCluster.classList.add('visible');
+
+        window.setTimeout(function() {
+          v.mimicsCluster.classList.remove('visible');
+
+          v.lipstickChoiceCluster.classList.add('visible');
+          magicControls.initRadial(v.lipstickChoiceCluster, 0.5, function() {
+            v.lipstickChoiceCluster.classList.remove('visible');
+            v.lipsDrawingCluster.classList.add('visible');
+
+            lipsDrawing.query();
+
+            v.lipsDrawingLowerContainer.classList.add('visible');
+
+            lipsDrawing.initLower(0.5, function() {
+              v.lipsDrawingLowerContainer.classList.remove('visible');
+              v.lipsDrawingUpperContainer.classList.add('visible');
+
+              lipsDrawing.initUpper(0.5, function() {
+                v.lipsDrawingUpperContainer.classList.remove('visible');
+
+                alert('What now?');
+              });
+            });
+          });
+        }, 1000);
+      }, 1000);
+    });
+  };
+
+  return module;
+}();
+
+main.query();
+main.init();
+main.run();
