@@ -781,6 +781,38 @@ div.fancy-image {
   }
 }
 
+div.lipstick-choice-container {
+  display: none;
+
+  &.visible {
+    display: block;
+  }
+}
+
+div.lips-drawing-super {
+  display: none;
+
+  &.visible {
+    display: block;
+  }
+}
+
+div.lips-drawing-upper-container {
+  display: none;
+
+  &.visible {
+    display: block;
+  }
+}
+
+div.lips-drawing-lower-container {
+  display: none;
+
+  &.visible {
+    display: block;
+  }
+}
+
 // animations
 
 @keyframes lips-control-shadow-upper {

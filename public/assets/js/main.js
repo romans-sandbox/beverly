@@ -100,7 +100,7 @@ var lipsDrawing = function() {
     return result;
   }
 
-  module.initUpper = function() {
+  module.initUpper = function(threshold, callback) {
     (function() {
       var point;
 
@@ -108,6 +108,10 @@ var lipsDrawing = function() {
 
       v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
     })();
+
+    if (!threshold) {
+      threshold = 1;
+    }
 
     v.upperControl.addEventListener('mousedown', function(ev) {
       ev.preventDefault();
@@ -123,11 +127,34 @@ var lipsDrawing = function() {
       if (status.upper.movable) {
         status.upper.movable = false;
 
-        if (status.upper.progress < options.threshold && status.upper.progress > 0) {
+        if (status.upper.progress === 1) {
+          if (typeof callback === 'function') {
+            callback();
+          }
+        } else if (status.upper.progress < threshold) {
+          if (status.upper.progress > 0) {
+            o = {x: status.upper.progress};
+
+            TweenLite.to(o, options.durations.controlReturn, {
+              x: 0,
+              onUpdate: function() {
+                point = calculateTrajectoryPoint(o.x, null, true);
+
+                v.upperControl.style.right = point.x + 'px';
+                v.upperControl.style.top = point.y + 'px';
+                v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
+              },
+              onComplete: function() {
+                status.upper.prevX = 0;
+                status.upper.progress = 0;
+              }
+            });
+          }
+        } else {
           o = {x: status.upper.progress};
 
           TweenLite.to(o, options.durations.controlReturn, {
-            x: 0,
+            x: 1,
             onUpdate: function() {
               point = calculateTrajectoryPoint(o.x, null, true);
 
@@ -136,8 +163,12 @@ var lipsDrawing = function() {
               v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
             },
             onComplete: function() {
-              status.upper.prevX = 0;
-              status.upper.progress = 0;
+              status.upper.prevX = 1 - options.pointDiff;
+              status.upper.progress = 1;
+
+              if (typeof callback === 'function') {
+                callback();
+              }
             }
           });
         }
@@ -167,7 +198,7 @@ var lipsDrawing = function() {
     }, false);
   };
 
-  module.initLower = function() {
+  module.initLower = function(threshold, callback) {
     (function() {
       var point;
 
@@ -175,6 +206,10 @@ var lipsDrawing = function() {
 
       v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
     })();
+
+    if (!threshold) {
+      threshold = 1;
+    }
 
     v.lowerControl.addEventListener('mousedown', function(ev) {
       ev.preventDefault();
@@ -190,11 +225,34 @@ var lipsDrawing = function() {
       if (status.lower.movable) {
         status.lower.movable = false;
 
-        if (status.lower.progress < options.threshold && status.lower.progress > 0) {
+        if (status.lower.progress === 1) {
+          if (typeof callback === 'function') {
+            callback();
+          }
+        } else if (status.lower.progress < threshold) {
+          if (status.lower.progress > 0) {
+            o = {x: status.lower.progress};
+
+            TweenLite.to(o, options.durations.controlReturn, {
+              x: 0,
+              onUpdate: function() {
+                point = calculateTrajectoryPoint(o.x, null, false);
+
+                v.lowerControl.style.left = point.x + 'px';
+                v.lowerControl.style.bottom = point.y + 'px';
+                v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
+              },
+              onComplete: function() {
+                status.lower.prevX = 0;
+                status.lower.progress = 0;
+              }
+            });
+          }
+        } else {
           o = {x: status.lower.progress};
 
           TweenLite.to(o, options.durations.controlReturn, {
-            x: 0,
+            x: 1,
             onUpdate: function() {
               point = calculateTrajectoryPoint(o.x, null, false);
 
@@ -203,8 +261,12 @@ var lipsDrawing = function() {
               v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
             },
             onComplete: function() {
-              status.lower.prevX = 0;
-              status.lower.progress = 0;
+              status.lower.prevX = 1 - options.pointDiff;
+              status.lower.progress = 1;
+
+              if (typeof callback === 'function') {
+                callback();
+              }
             }
           });
         }
@@ -242,11 +304,15 @@ var magicControls = function() {
 
   var options = {};
 
-  module.initRadial = function(context) {
+  module.initRadial = function(context, threshold, callback) {
     var wrappers, i;
 
     if (!context) {
       context = document;
+    }
+
+    if (!threshold) {
+      threshold = 1;
     }
 
     wrappers = context.querySelectorAll('[data-magic-control="radial"]');
@@ -255,13 +321,11 @@ var magicControls = function() {
       for (i = 0; i < wrappers.length; i++) {
         (function(wrapper, control, shadows, duration) {
           var controlBox, targetRadius, timeline;
-          var i, resetTimeout;
+          var i, firstShadowName = null;
 
           controlBox = control.getBoundingClientRect();
 
           wrapper.addEventListener('mousedown', function() {
-            window.clearTimeout(resetTimeout);
-
             targetRadius = Math.sqrt(
                 Math.pow(
                   Math.max(
@@ -286,7 +350,11 @@ var magicControls = function() {
             if (shadows) {
               for (i = 0; i < shadows.length; i++) {
                 (function(shadowName, radius) {
-                  timeline.fromTo(shadows[i], duration / shadows.length, {
+                  if (firstShadowName === null) {
+                    firstShadowName = shadowName;
+                  }
+
+                  timeline.fromTo(shadows[i], i === 0 ? 0.05 : duration / shadows.length, {
                     left: controlBox.width / 2,
                     top: controlBox.height / 2,
                     width: 0,
@@ -299,6 +367,13 @@ var magicControls = function() {
                     ease: Power4.easeOut,
                     onStart: function() {
                       wrapper.classList.add('state-' + shadowName);
+                    },
+                    onReverseComplete: function() {
+                      wrapper.classList.remove('state-' + shadowName);
+
+                      if (shadowName === firstShadowName) {
+                        wrapper.classList.remove('state-0');
+                      }
                     }
                   });
                 })(
@@ -309,23 +384,19 @@ var magicControls = function() {
                 );
               }
             }
+
+            timeline.eventCallback('onComplete', function() {
+              if (typeof callback === 'function') {
+                callback();
+              }
+            });
           });
 
           wrapper.addEventListener('mouseup', function() {
-            var shadowName;
-
-            timeline.duration(duration / 4);
-            timeline.reverse();
-
-            resetTimeout = window.setTimeout(function() {
-              wrapper.classList.remove('state-0');
-
-              for (i = 0; i < shadows.length; i++) {
-                shadowName = shadows[i].getAttribute('data-shadow');
-
-                wrapper.classList.remove('state-' + shadowName);
-              }
-            }, duration * 1000 / 4);
+            if (threshold >= 1 || timeline.progress() < threshold) {
+              timeline.duration(duration / 3);
+              timeline.reverse();
+            }
           });
         })(
           wrappers[i],
@@ -583,12 +654,6 @@ FancyContent.initWrappers = function(context) {
   }
 };
 
-////
-
-// lipsDrawing.query();
-// lipsDrawing.initUpper();
-// lipsDrawing.initLower();
-
 ///
 
 // magicControls.initRadial();
@@ -649,6 +714,10 @@ window.setTimeout(function() {
 var getStartedButton = document.querySelector('#get-started-button');
 var intro = document.querySelector('#intro');
 var mimicsBackground = document.querySelector('#mimics-background');
+var lipstickChoice = document.querySelector('#lipstick-choice-container');
+var lipsDrawingContainer = document.querySelector('#lips-drawing-super');
+var lipsDrawingUpperContainer = document.querySelector('#lips-drawing-upper-container');
+var lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
 
 getStartedButton.addEventListener('click', function() {
   introText.wrapper.parentNode.classList.remove('up');
@@ -658,5 +727,30 @@ getStartedButton.addEventListener('click', function() {
   window.setTimeout(function() {
     intro.classList.add('hidden');
     mimicsBackground.classList.add('visible');
+
+    window.setTimeout(function() {
+      mimicsBackground.classList.remove('visible');
+
+      lipstickChoice.classList.add('visible');
+      magicControls.initRadial(lipstickChoice, 0.5, function() {
+        lipstickChoice.classList.remove('visible');
+        lipsDrawingContainer.classList.add('visible');
+
+        lipsDrawing.query();
+
+        lipsDrawing.initLower(0.5, function() {
+          lipsDrawing.initUpper(0.5, function() {
+            lipsDrawingUpperContainer.classList.remove('visible');
+
+            alert('What now?');
+          });
+
+          lipsDrawingLowerContainer.classList.remove('visible');
+          lipsDrawingUpperContainer.classList.add('visible');
+        });
+
+        lipsDrawingLowerContainer.classList.add('visible');
+      });
+    }, 1000);
   }, 1000);
 });
