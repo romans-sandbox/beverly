@@ -599,6 +599,7 @@ div.nullmighty-symbol-small {
 
 div.left-page-controls {
   position: absolute;
+  z-index: 200;
   left: 20px;
   bottom: -25px;
   transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -618,6 +619,7 @@ div.left-page-controls {
 
 div.right-page-controls {
   position: absolute;
+  z-index: 200;
   right: 20px;
   bottom: -25px;
   transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
