@@ -43,11 +43,6 @@ div.cluster {
     display: block;
   }
 
-  &.bg-intro {
-    background: url($img-dir + '/intro-background.png') top center;
-    background-size: cover;
-  }
-
   &.mimics {
     font-size: 10em;
     color: $k2;
@@ -730,6 +725,16 @@ div.intro-get-started-container {
 
   &.visible {
     bottom: 300px;
+  }
+}
+
+div.intro-video {
+  height: 100%;
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 

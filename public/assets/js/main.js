@@ -734,7 +734,6 @@ var main = function() {
     v.pageLeftControls = document.querySelector('#page-left-controls');
     v.pageRightControls = document.querySelector('#page-right-controls');
     v.introGetStartedButton = document.querySelector('#intro-get-started-button');
-    v.introCluster = document.querySelector('#intro-cluster');
     v.mimicsCluster = document.querySelector('#mimics-cluster');
     v.lipstickChoiceCluster = document.querySelector('#lipstick-choice-cluster');
     v.lipsDrawingCluster = document.querySelector('#lips-drawing-cluster');
