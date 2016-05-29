@@ -14,7 +14,7 @@
     <div class="shadow-d" data-shadow="d"></div>
     <div class="close" id="common-curtain-close-trigger">&times;</div>
   </div>
-  <div class="left-page-controls" id="page-left-controls">
+  <div class="page-controls left" id="page-left-controls">
     <div class="simple-button small" data-magic-control="curtain" data-fold>
       <button class="control">credits & legal</button>
     </div><!--
@@ -27,27 +27,27 @@
       <button class="control"><i class="fa fa-arrows-alt" aria-hidden="true"></i></button>
     </div>
   </div>
-  <div class="right-page-controls" id="page-right-controls">
-    <div class="abh-horizontal-small"></div>
+  <div class="page-controls right" id="page-right-controls">
+    <div class="abh-logo-horizontal-small"></div>
     <div class="nullmighty-symbol-small"></div>
   </div>
-  <div class="intro-background" id="intro">
-    <div class="intro-abh-container">
-      <div class="fancy-image" data-fancy-content id="my-fancy-image">
+  <div class="cluster bg-intro visible" id="intro-cluster">
+    <div class="intro-abh">
+      <div class="fancy-image" data-fancy-content id="intro-abh-logo">
         <div class="main">
-          <div class="abh-large"></div>
+          <div class="abh-logo-large"></div>
         </div>
       </div>
     </div>
     <div class="intro-text">
-      <div class="fancy-text style-0" data-fancy-content id="intro-fancy-text">
+      <div class="fancy-text style-0" data-fancy-content id="intro-text">
         <div class="main">
           choose the <div>perfect shade</div>
         </div>
       </div>
     </div>
     <div class="intro-get-started-container" id="intro-get-started-container">
-      <div class="simple-button large style-1" id="get-started-button">
+      <div class="simple-button large style-1" id="intro-get-started-button">
         <button class="control">get started</button>
       </div>
     </div>
@@ -61,10 +61,10 @@
       </div>
     </div>-->
   </div>
-  <div class="mimics-background" id="mimics-background">
+  <div class="cluster mimics" id="mimics-cluster">
     face expressions here!
   </div>
-  <div class="lipstick-choice-container" id="lipstick-choice-container">
+  <div class="cluster" id="lipstick-choice-cluster">
     <div class="lipstick-colors-container">
       <div class="magic-disk style-1" data-magic-control="radial" data-duration="1.5">
         <div class="disk" data-control></div>
@@ -110,33 +110,31 @@
       </div>
     </div>
   </div>
-  <div class="lips-drawing-super" id="lips-drawing-super">
-    <div class="lips-drawing-container" id="lips-drawing-container">
-      <div class="lips-drawing-upper-container" id="lips-drawing-upper-container">
-        <div class="control upper" id="lips-drawing-upper-control">
-          <div class="main"><div class="arrow"></div></div>
-          <div class="shadow"></div>
-        </div>
-        <div class="trajectory upper" id="lips-drawing-upper-trajectory">
-          <svg xmlns="http://www.w3.org/2000/svg" width="264" height="100">
-            <g transform="translate(3, 2)">
-              <path d="M0,50 C0,50 126,-60 258,50"></path>
-            </g>
-          </svg>
-        </div>
+  <div class="cluster" id="lips-drawing-cluster">
+    <div class="lips-drawing-container" id="lips-drawing-upper-container">
+      <div class="control upper" id="lips-drawing-upper-control">
+        <div class="main"><div class="arrow"></div></div>
+        <div class="shadow"></div>
       </div>
-      <div class="lips-drawing-lower-container" id="lips-drawing-lower-container">
-        <div class="control lower" id="lips-drawing-lower-control">
-          <div class="main"><div class="arrow"></div></div>
-          <div class="shadow"></div>
-        </div>
-        <div class="trajectory lower" id="lips-drawing-lower-trajectory">
-          <svg xmlns="http://www.w3.org/2000/svg" width="264" height="100">
-            <g transform="translate(3, 4)">
-              <path d="M0,0 C0,0 126,76 258,0"></path>
-            </g>
-          </svg>
-        </div>
+      <div class="trajectory upper" id="lips-drawing-upper-trajectory">
+        <svg xmlns="http://www.w3.org/2000/svg" width="264" height="100">
+          <g transform="translate(3, 2)">
+            <path d="M0,50 C0,50 126,-60 258,50"></path>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="lips-drawing-container" id="lips-drawing-lower-container">
+      <div class="control lower" id="lips-drawing-lower-control">
+        <div class="main"><div class="arrow"></div></div>
+        <div class="shadow"></div>
+      </div>
+      <div class="trajectory lower" id="lips-drawing-lower-trajectory">
+        <svg xmlns="http://www.w3.org/2000/svg" width="264" height="100">
+          <g transform="translate(3, 4)">
+            <path d="M0,0 C0,0 126,76 258,0"></path>
+          </g>
+        </svg>
       </div>
     </div>
   </div>

@@ -1,3 +1,5 @@
+// colours
+
 $km1: rgb(222, 135, 148);
 $km2: rgb(210, 75, 118);
 $km3: rgb(255, 107, 157);
@@ -10,7 +12,11 @@ $k3: #bbb;
 $k4: #ddd;
 $k5: #4b5252;
 
+// paths
+
 $img-dir: '../img/';
+
+// layout
 
 html,
 body {
@@ -25,106 +31,72 @@ body {
   overflow: hidden;
 }
 
-div.intro-background {
-  background: url($img-dir + '/intro-background.png') top center;
-  background-size: cover;
+div.cluster {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
-
-  &.hidden {
-    display: none;
-  }
-}
-
-div.intro-get-started-container {
-  position: absolute;
-  left: 50%;
-  bottom: -60px;
-  transform: translateX(-50%);
-  transition: 1s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
-
-  &.visible {
-    bottom: 300px;
-  }
-}
-
-div.intro-abh-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-
-  &.visible {
-    opacity: 1;
-  }
-}
-
-div.abh-large {
-  background: url($img-dir + '/abh-large-light.png');
-  background-size: 420px 243px;
-  width: 420px;
-  height: 243px;
-}
-
-div.intro-text {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  width: 700px;
-  text-align: center;
-  transition: 1s top cubic-bezier(0.215, 0.61, 0.355, 1);
-
-  div.fancy-text {
-    div.main,
-    div.shadow-a,
-    div.shadow-b {
-      width: 700px;
-      text-align: center;
-      font-size: 4em;
-      letter-spacing: 0.1em;
-
-      div {
-        margin-top: 5px;
-        font-size: 1.5em;
-      }
-    }
-
-    div.main,
-    div.shadow-a {
-      left: 50%;
-    }
-
-    div.shadow-a {
-      transform: translateX(-50%);
-    }
-
-    &.ready {
-      div.main {
-        transform: translateX(-50%);
-      }
-    }
-  }
-
-  &.visible {
-    opacity: 1;
-  }
-
-  &.up {
-    top: 300px;
-  }
-}
-
-div.mimics-background {
-  display: none;
-  font-size: 10em;
-  color: $k2;
 
   &.visible {
     display: block;
   }
+
+  &.bg-intro {
+    background: url($img-dir + '/intro-background.png') top center;
+    background-size: cover;
+  }
+
+  &.mimics {
+    font-size: 10em;
+    color: $k2;
+  }
+}
+
+div.page-controls {
+  position: absolute;
+  bottom: -25px;
+  transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  &.left {
+    z-index: 150;
+    left: 20px;
+  }
+
+  &.right {
+    z-index: 350;
+    right: 20px;
+  }
+
+  &.visible {
+    bottom: 20px;
+  }
+
+  div.simple-button {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  div.abh-logo-horizontal-small,
+  div.nullmighty-symbol-small {
+    display: inline-block;
+  }
+
+  div.abh-logo-horizontal-small {
+    margin-right: 20px;
+  }
+}
+
+div.lipstick-colors-container {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 100px;
+  transform: translateX(-50%);
 }
 
 div.lips-drawing-container {
@@ -135,6 +107,11 @@ div.lips-drawing-container {
   transform: translate(-50%, -70%);
   width: 300px;
   height: 130px;
+  display: none;
+
+  &.visible {
+    display: block;
+  }
 
   div.control {
     position: absolute;
@@ -228,6 +205,8 @@ div.lips-drawing-container {
     }
   }
 }
+
+// user interface
 
 div.simple-button {
   position: relative;
@@ -584,69 +563,6 @@ div.magic-curtain {
   }
 }
 
-div.abh-horizontal-small {
-  background: url($img-dir + '/abh-horizontal-small.png');
-  background-size: 115px 24px;
-  width: 115px;
-  height: 24px;
-}
-
-div.nullmighty-symbol-small {
-  background: url($img-dir + '/nullmighty-symbol-small.png');
-  background-size: 24px 24px;
-  width: 24px;
-  height: 24px;
-}
-
-div.left-page-controls {
-  position: absolute;
-  z-index: 150;
-  left: 20px;
-  bottom: -25px;
-  transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
-
-  &.visible {
-    bottom: 20px;
-  }
-
-  div.simple-button {
-    margin-right: 10px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-}
-
-div.right-page-controls {
-  position: absolute;
-  z-index: 350;
-  right: 20px;
-  bottom: -25px;
-  transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
-
-  &.visible {
-    bottom: 20px;
-  }
-
-  div.abh-horizontal-small,
-  div.nullmighty-symbol-small {
-    display: inline-block;
-  }
-
-  div.abh-horizontal-small {
-    margin-right: 20px;
-  }
-}
-
-div.lipstick-colors-container {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  bottom: 100px;
-  transform: translateX(-50%);
-}
-
 div.fancy-text {
   position: relative;
 
@@ -784,35 +700,98 @@ div.fancy-image {
   }
 }
 
-div.lipstick-choice-container {
-  display: none;
+div.abh-logo-horizontal-small {
+  background: url($img-dir + '/abh-horizontal-small.png');
+  background-size: 115px 24px;
+  width: 115px;
+  height: 24px;
+}
+
+div.nullmighty-symbol-small {
+  background: url($img-dir + '/nullmighty-symbol-small.png');
+  background-size: 24px 24px;
+  width: 24px;
+  height: 24px;
+}
+
+div.abh-logo-large {
+  background: url($img-dir + '/abh-large-light.png');
+  background-size: 420px 243px;
+  width: 420px;
+  height: 243px;
+}
+
+div.intro-get-started-container {
+  position: absolute;
+  left: 50%;
+  bottom: -60px;
+  transform: translateX(-50%);
+  transition: 1s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
 
   &.visible {
-    display: block;
+    bottom: 300px;
   }
 }
 
-div.lips-drawing-super {
-  display: none;
+div.intro-abh {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
 
   &.visible {
-    display: block;
+    opacity: 1;
   }
 }
 
-div.lips-drawing-upper-container {
-  display: none;
+div.intro-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  width: 700px;
+  text-align: center;
+  transition: 1s top cubic-bezier(0.215, 0.61, 0.355, 1);
 
-  &.visible {
-    display: block;
+  div.fancy-text {
+    div.main,
+    div.shadow-a,
+    div.shadow-b {
+      width: 700px;
+      text-align: center;
+      font-size: 4em;
+      letter-spacing: 0.1em;
+
+      div {
+        margin-top: 5px;
+        font-size: 1.5em;
+      }
+    }
+
+    div.main,
+    div.shadow-a {
+      left: 50%;
+    }
+
+    div.shadow-a {
+      transform: translateX(-50%);
+    }
+
+    &.ready {
+      div.main {
+        transform: translateX(-50%);
+      }
+    }
   }
-}
-
-div.lips-drawing-lower-container {
-  display: none;
 
   &.visible {
-    display: block;
+    opacity: 1;
+  }
+
+  &.up {
+    top: 300px;
   }
 }
 

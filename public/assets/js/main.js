@@ -28,7 +28,8 @@ var lipsDrawing = function() {
   };
 
   module.query = function() {
-    v.container = document.querySelector('#lips-drawing-container');
+    v.upperContainer = document.querySelector('#lips-drawing-upper-container');
+    v.lowerContainer = document.querySelector('#lips-drawing-lower-container');
     v.upperControl = document.querySelector('#lips-drawing-upper-control');
     v.upperControlArrow = v.upperControl.querySelector('div.arrow');
     v.upperTrajectory = document.querySelector('#lips-drawing-upper-trajectory');
@@ -40,7 +41,7 @@ var lipsDrawing = function() {
   function calculateTrajectoryPoint(t, prev, upper) {
     var containerBox, availWidth, point, prevPoint;
 
-    containerBox = v.container.getBoundingClientRect();
+    containerBox = upper ? v.upperContainer.getBoundingClientRect() : v.lowerContainer.getBoundingClientRect();
     availWidth = containerBox.width - options.controlBoxSize;
 
     point = {
@@ -67,7 +68,7 @@ var lipsDrawing = function() {
   function calculateUpperX(ev, start) {
     var containerBox, availWidth, result;
 
-    containerBox = v.container.getBoundingClientRect();
+    containerBox = v.upperContainer.getBoundingClientRect();
     availWidth = containerBox.width - options.controlBoxSize;
     result = availWidth - ev.pageX + containerBox.left + options.controlBoxSize / 2 - start;
 
@@ -85,7 +86,7 @@ var lipsDrawing = function() {
   function calculateLowerX(ev, start) {
     var containerBox, availWidth, result;
 
-    containerBox = v.container.getBoundingClientRect();
+    containerBox = v.lowerContainer.getBoundingClientRect();
     availWidth = containerBox.width - options.controlBoxSize;
     result = ev.pageX - containerBox.left - options.controlBoxSize / 2 - start;
 
@@ -180,7 +181,7 @@ var lipsDrawing = function() {
 
       ev.preventDefault();
 
-      containerBox = v.container.getBoundingClientRect();
+      containerBox = v.upperContainer.getBoundingClientRect();
       availWidth = containerBox.width - options.controlBoxSize;
 
       if (status.upper.movable) {
@@ -278,7 +279,7 @@ var lipsDrawing = function() {
 
       ev.preventDefault();
 
-      containerBox = v.container.getBoundingClientRect();
+      containerBox = v.lowerContainer.getBoundingClientRect();
       availWidth = containerBox.width - options.controlBoxSize;
 
       if (status.lower.movable) {
@@ -689,72 +690,77 @@ commonCurtain.init();
 magicControls.initCurtain(commonCurtain);
 magicControls.initCurtainCloseTrigger(commonCurtain, document.querySelector('#common-curtain-close-trigger'));
 
-var abhIntroLogo = new FancyContent(document.querySelector('#my-fancy-image'));
-var introText = new FancyContent(document.querySelector('#intro-fancy-text'));
-var introGetStartedContainer = document.querySelector('#intro-get-started-container');
-var pageLeftControls = document.querySelector('#page-left-controls');
-var pageRightControls = document.querySelector('#page-right-controls');
+var v = {};
+
+v.introCluster = document.querySelector('#intro-cluster');
+v.introAbhLogo = document.querySelector('#intro-abh-logo');
+v.introText = document.querySelector('#intro-text');
+v.introGetStartedContainer = document.querySelector('#intro-get-started-container');
+v.pageLeftControls = document.querySelector('#page-left-controls');
+v.pageRightControls = document.querySelector('#page-right-controls');
+v.introGetStartedButton = document.querySelector('#intro-get-started-button');
+v.introCluster = document.querySelector('#intro-cluster');
+v.mimicsCluster = document.querySelector('#mimics-cluster');
+v.lipstickChoiceCluster = document.querySelector('#lipstick-choice-cluster');
+v.lipsDrawingCluster = document.querySelector('#lips-drawing-cluster');
+v.lipsDrawingUpperContainer = document.querySelector('#lips-drawing-upper-container');
+v.lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
+
+var fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
+var fancyIntroText = new FancyContent(v.introText);
 
 window.setTimeout(function() {
-  abhIntroLogo.wrapper.parentNode.classList.add('visible');
-  abhIntroLogo.fold();
+  fancyIntroAbhLogo.wrapper.parentNode.classList.add('visible');
+  fancyIntroAbhLogo.fold();
 
   window.setTimeout(function() {
-    abhIntroLogo.unfold();
+    fancyIntroAbhLogo.unfold();
 
     window.setTimeout(function() {
-      introText.wrapper.parentNode.classList.add('visible');
-      introText.fold();
+      fancyIntroText.wrapper.parentNode.classList.add('visible');
+      fancyIntroText.fold();
 
       window.setTimeout(function() {
-        introText.wrapper.parentNode.classList.add('up');
-        introGetStartedContainer.classList.add('visible');
-        pageLeftControls.classList.add('visible');
-        pageRightControls.classList.add('visible');
+        fancyIntroText.wrapper.parentNode.classList.add('up');
+        v.introGetStartedContainer.classList.add('visible');
+        v.pageLeftControls.classList.add('visible');
+        v.pageRightControls.classList.add('visible');
       }, 500);
     }, 2000);
   }, 2000);
 }, 1000);
 
-var getStartedButton = document.querySelector('#get-started-button');
-var intro = document.querySelector('#intro');
-var mimicsBackground = document.querySelector('#mimics-background');
-var lipstickChoice = document.querySelector('#lipstick-choice-container');
-var lipsDrawingContainer = document.querySelector('#lips-drawing-super');
-var lipsDrawingUpperContainer = document.querySelector('#lips-drawing-upper-container');
-var lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
-
-getStartedButton.addEventListener('click', function() {
-  introText.wrapper.parentNode.classList.remove('up');
-  introGetStartedContainer.classList.remove('visible');
-  introText.unfold();
+v.introGetStartedButton.addEventListener('click', function() {
+  v.introText.parentNode.classList.remove('up');
+  v.introGetStartedContainer.classList.remove('visible');
+  fancyIntroText.unfold();
 
   window.setTimeout(function() {
-    intro.classList.add('hidden');
-    mimicsBackground.classList.add('visible');
+    v.introCluster.classList.add('hidden');
+    v.mimicsCluster.classList.add('visible');
 
     window.setTimeout(function() {
-      mimicsBackground.classList.remove('visible');
+      v.mimicsCluster.classList.remove('visible');
 
-      lipstickChoice.classList.add('visible');
-      magicControls.initRadial(lipstickChoice, 0.5, function() {
-        lipstickChoice.classList.remove('visible');
-        lipsDrawingContainer.classList.add('visible');
+      v.lipstickChoiceCluster.classList.add('visible');
+      magicControls.initRadial(v.lipstickChoiceCluster, 0.5, function() {
+        v.lipstickChoiceCluster.classList.remove('visible');
+        v.lipsDrawingCluster.classList.add('visible');
 
         lipsDrawing.query();
 
+        v.lipsDrawingLowerContainer.classList.add('visible');
+
         lipsDrawing.initLower(0.5, function() {
+          v.lipsDrawingLowerContainer.classList.remove('visible');
+          v.lipsDrawingUpperContainer.classList.add('visible');
+
           lipsDrawing.initUpper(0.5, function() {
-            lipsDrawingUpperContainer.classList.remove('visible');
+            v.lipsDrawingUpperContainer.classList.remove('visible');
 
             alert('What now?');
           });
-
-          lipsDrawingLowerContainer.classList.remove('visible');
-          lipsDrawingUpperContainer.classList.add('visible');
         });
-
-        lipsDrawingLowerContainer.classList.add('visible');
       });
     }, 1000);
   }, 1000);
