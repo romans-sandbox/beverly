@@ -684,6 +684,11 @@ FancyContent.initWrappers = function(context) {
 
 FancyContent.initWrappers();
 
+var commonCurtain = new MagicCurtain(document.querySelector('#common-curtain'));
+commonCurtain.init();
+magicControls.initCurtain(commonCurtain);
+magicControls.initCurtainCloseTrigger(commonCurtain, document.querySelector('#common-curtain-close-trigger'));
+
 var abhIntroLogo = new FancyContent(document.querySelector('#my-fancy-image'));
 var introText = new FancyContent(document.querySelector('#intro-fancy-text'));
 var introGetStartedContainer = document.querySelector('#intro-get-started-container');

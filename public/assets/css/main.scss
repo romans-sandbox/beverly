@@ -482,6 +482,7 @@ div.magic-disk {
 
 div.magic-curtain {
   position: absolute;
+  z-index: 250;
   left: 0;
   top: 0;
   height: 100%;
@@ -599,7 +600,7 @@ div.nullmighty-symbol-small {
 
 div.left-page-controls {
   position: absolute;
-  z-index: 200;
+  z-index: 150;
   left: 20px;
   bottom: -25px;
   transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -619,7 +620,7 @@ div.left-page-controls {
 
 div.right-page-controls {
   position: absolute;
-  z-index: 200;
+  z-index: 350;
   right: 20px;
   bottom: -25px;
   transition: 2s bottom cubic-bezier(0.215, 0.61, 0.355, 1);
