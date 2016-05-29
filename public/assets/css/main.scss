@@ -546,6 +546,24 @@ div.magic-curtain {
     }
   }
 
+  &.style-0 {
+    div.shadow-d {
+      background: $k1;
+    }
+
+    div.shadow-a {
+      background: rgba($k1, 0.25);
+    }
+
+    div.shadow-b {
+      background: rgba($k1, 0.5);
+    }
+
+    div.shadow-c {
+      background: rgba($k1, 0.75);
+    }
+  }
+
   &.style-1 {
     div.shadow-d {
       background: $km1;
