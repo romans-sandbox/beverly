@@ -609,11 +609,17 @@ div.magic-curtain {
   div.shadow-a,
   div.shadow-b,
   div.shadow-c,
-  div.shadow-d {
+  div.shadow-d,
+  div.content {
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
+  }
+
+  div.content {
+    overflow: hidden;
+    width: 0;
   }
 
   div.close {
@@ -650,7 +656,8 @@ div.magic-curtain {
   }
 
   &.state-d {
-    div.shadow-d {
+    div.shadow-d,
+    div.content {
       z-index: 40;
     }
 
@@ -938,6 +945,36 @@ div.intro-text {
 
   &.up {
     top: 300px;
+  }
+}
+
+div.product-preview {
+  position: absolute;
+  z-index: 5;
+  left: -200px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba($k1, 0.25);
+  padding: 20px 20px 20px 40px;
+  width: 193px;
+  box-sizing: border-box;
+  transition: 500ms left cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  &.visible {
+    left: 0;
+  }
+
+  div.image {
+    img {
+      display: block;
+      margin: 0 auto;
+      width: 91px;
+      height: 250px;
+    }
+  }
+
+  div.action {
+    margin-top: 10px;
   }
 }
 

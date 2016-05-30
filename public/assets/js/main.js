@@ -481,7 +481,7 @@ var MagicCurtain = function(curtain) {
     }
   };
 
-  var initialised = false, timeline, shadows;
+  var initialised = false, timeline, shadows, content;
 
   this.overrideFoldDuration = function(duration) {
     options.durations.fold = duration;
@@ -495,12 +495,13 @@ var MagicCurtain = function(curtain) {
     var firstShadowName = null;
 
     shadows = curtain.querySelectorAll('[data-shadow]');
+    content = curtain.querySelector('[data-content]');
 
     timeline = new TimelineLite();
 
     if (shadows) {
       for (i = 0; i < shadows.length; i++) {
-        (function(shadowName, sizeCoefficient) {
+        (function(i, shadowName, sizeCoefficient) {
           if (firstShadowName === null) {
             firstShadowName = shadowName;
           }
@@ -517,6 +518,16 @@ var MagicCurtain = function(curtain) {
               if (shadowName === firstShadowName) {
                 curtain.classList.add('state-0');
               }
+
+              if (content && i === shadows.length - 1) {
+                // last
+                TweenLite.fromTo(content, options.durations.fold / shadows.length, {
+                  width: 0
+                }, {
+                  width: '100%',
+                  ease: Power4.easeOut
+                });
+              }
             },
             onReverseComplete: function() {
               curtain.classList.remove('state-' + shadowName);
@@ -528,6 +539,7 @@ var MagicCurtain = function(curtain) {
             }
           });
         })(
+          i,
           shadows[i].getAttribute('data-shadow'),
           2 / 3 + 1 / 3 / (shadows.length - 1) * i
         );
@@ -753,6 +765,7 @@ var main = function() {
     v.lipsDrawingCluster = document.querySelector('#lips-drawing-cluster');
     v.lipsDrawingUpperContainer = document.querySelector('#lips-drawing-upper-container');
     v.lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
+    v.productPreviewMidnight = document.querySelector('#product-preview-midnight');
   };
 
   module.init = function() {
@@ -829,6 +842,8 @@ var main = function() {
             : wrapper.classList.contains('style-6')
             ? 'style-6'
             : null;
+
+          v.productPreviewMidnight.classList.add('visible');
 
           lipsDrawing.initLower(0.5, style, function() {
             v.lipsDrawingLowerContainer.classList.remove('visible');
