@@ -504,6 +504,8 @@ var magicControls = function() {
           foldedCluster = null;
         }
       });
+
+      close.classList.remove('visible');
     });
   };
 

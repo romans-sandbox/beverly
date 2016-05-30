@@ -640,18 +640,16 @@ div.magic-curtain {
 
 div.magic-curtain-close {
   position: absolute;
+  z-index: 350;
   right: -50px;
   top: 20px;
   font-size: 5em;
   cursor: default;
-  visibility: hidden;
   pointer-events: none;
   transition: 500ms right;
 
   &.visible {
     right: 70px;
-    z-index: 350;
-    visibility: visible;
     pointer-events: auto;
   }
 }
