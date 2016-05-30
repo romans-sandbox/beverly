@@ -101,7 +101,17 @@ var lipsDrawing = function() {
     return result;
   }
 
-  module.initUpper = function(threshold, callback) {
+  function setStyle(container, style) {
+    container.classList.remove('style-1');
+    container.classList.remove('style-2');
+    container.classList.remove('style-3');
+    container.classList.remove('style-4');
+    container.classList.remove('style-5');
+    container.classList.remove('style-6');
+    container.classList.add(style);
+  }
+
+  module.initUpper = function(threshold, style, callback) {
     (function() {
       var point;
 
@@ -113,6 +123,8 @@ var lipsDrawing = function() {
     if (!threshold) {
       threshold = 1;
     }
+
+    setStyle(v.upperContainer, style);
 
     v.upperControl.addEventListener('mousedown', function(ev) {
       ev.preventDefault();
@@ -199,7 +211,7 @@ var lipsDrawing = function() {
     }, false);
   };
 
-  module.initLower = function(threshold, callback) {
+  module.initLower = function(threshold, style, callback) {
     (function() {
       var point;
 
@@ -211,6 +223,8 @@ var lipsDrawing = function() {
     if (!threshold) {
       threshold = 1;
     }
+
+    setStyle(v.lowerContainer, style);
 
     v.lowerControl.addEventListener('mousedown', function(ev) {
       ev.preventDefault();
@@ -388,7 +402,7 @@ var magicControls = function() {
 
             timeline.eventCallback('onComplete', function() {
               if (typeof callback === 'function') {
-                callback();
+                callback(wrapper);
               }
             });
           });
@@ -791,7 +805,9 @@ var main = function() {
         v.mimicsCluster.classList.remove('visible');
 
         v.lipstickChoiceCluster.classList.add('visible');
-        magicControls.initRadial(v.lipstickChoiceCluster, 0.5, function() {
+        magicControls.initRadial(v.lipstickChoiceCluster, 0.5, function(wrapper) {
+          var style;
+
           v.lipstickChoiceCluster.classList.remove('visible');
           v.lipsDrawingCluster.classList.add('visible');
 
@@ -799,11 +815,26 @@ var main = function() {
 
           v.lipsDrawingLowerContainer.classList.add('visible');
 
-          lipsDrawing.initLower(0.5, function() {
+          // is there a better way?
+          style = wrapper.classList.contains('style-1')
+            ? 'style-1'
+            : wrapper.classList.contains('style-2')
+            ? 'style-2'
+            : wrapper.classList.contains('style-3')
+            ? 'style-3'
+            : wrapper.classList.contains('style-4')
+            ? 'style-4'
+            : wrapper.classList.contains('style-5')
+            ? 'style-5'
+            : wrapper.classList.contains('style-6')
+            ? 'style-6'
+            : null;
+
+          lipsDrawing.initLower(0.5, style, function() {
             v.lipsDrawingLowerContainer.classList.remove('visible');
             v.lipsDrawingUpperContainer.classList.add('visible');
 
-            lipsDrawing.initUpper(0.5, function() {
+            lipsDrawing.initUpper(0.5, style, function() {
               v.lipsDrawingUpperContainer.classList.remove('visible');
 
               alert('What now?');
