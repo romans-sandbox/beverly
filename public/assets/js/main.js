@@ -339,6 +339,8 @@ var magicControls = function() {
 
   var options = {};
 
+  var curtainClusters = {};
+
   module.initRadial = function(context, threshold, callback) {
     var wrappers, i;
 
@@ -443,8 +445,8 @@ var magicControls = function() {
     }
   };
 
-  module.initCurtain = function(curtain, context) {
-    var wrappers, i;
+  module.initCurtain = function(curtain, close, context) {
+    var wrappers, i, foldedCluster;
 
     if (!context) {
       context = document;
@@ -454,14 +456,28 @@ var magicControls = function() {
 
     if (wrappers) {
       for (i = 0; i < wrappers.length; i++) {
-        (function(wrapper, duration) {
+        (function(wrapper, duration, curtainClusterTarget) {
           if (wrapper.hasAttribute('data-fold')) {
             wrapper.addEventListener('click', function() {
               if (duration) {
                 curtain.overrideFoldDuration(duration);
               }
 
-              curtain.fold();
+              curtain.fold(function() {
+                if (wrapper.hasAttribute('data-curtain-cluster-target')) {
+                  curtainClusterTarget = magicControls.findCurtainCluster(
+                    wrapper.getAttribute('data-curtain-cluster-target')
+                  );
+
+                  if (curtainClusterTarget) {
+                    curtainClusterTarget.fold();
+
+                    foldedCluster = curtainClusterTarget;
+                  }
+                }
+              });
+
+              close.classList.add('visible');
             });
           }
 
@@ -471,7 +487,7 @@ var magicControls = function() {
                 curtain.overrideUnfoldDuration(duration);
               }
 
-              curtain.unfold();
+              close.classList.remove('visible');
             });
           }
         })(
@@ -480,12 +496,45 @@ var magicControls = function() {
         );
       }
     }
+
+    close.addEventListener('click', function() {
+      curtain.unfold(function() {
+        if (foldedCluster) {
+          foldedCluster.unfold();
+          foldedCluster = null;
+        }
+      });
+    });
   };
 
-  module.initCurtainCloseTrigger = function(curtain, close) {
-    close.addEventListener('click', function() {
-      curtain.unfold();
-    });
+  module.initCurtainClusters = function(context) {
+    var i, clusters;
+
+    if (!context) {
+      context = document;
+    }
+
+    clusters = context.querySelectorAll('[data-curtain-cluster]');
+
+    if (clusters) {
+      for (i = 0; i < clusters.length; i++) {
+        (function(cluster, clusterName) {
+          clusterName = cluster.getAttribute('data-curtain-cluster');
+
+          curtainClusters[clusterName] = new MagicCurtainCluster(cluster);
+        })(
+          clusters[i]
+        );
+      }
+    }
+  };
+
+  module.findCurtainCluster = function(clusterName) {
+    if (clusterName in curtainClusters) {
+      return curtainClusters[clusterName];
+    }
+
+    console.error('Unknown curtain cluster `' + clusterName + '`.');
   };
 
   return module;
@@ -571,7 +620,7 @@ var MagicCurtain = function(curtain) {
     initialised = true;
   };
 
-  this.fold = function() {
+  this.fold = function(asyncCallback) {
     if (!initialised) {
       console.error('Timeline not initialised.');
       return;
@@ -583,9 +632,13 @@ var MagicCurtain = function(curtain) {
 
     timeline.duration(options.durations.fold);
     timeline.play();
+
+    if (typeof asyncCallback === 'function') {
+      window.setTimeout(asyncCallback, options.durations.fold * 1000);
+    }
   };
 
-  this.unfold = function() {
+  this.unfold = function(asyncCallback) {
     if (!initialised) {
       console.error('Timeline not initialised.');
       return;
@@ -593,6 +646,10 @@ var MagicCurtain = function(curtain) {
 
     timeline.duration(options.durations.unfold);
     timeline.reverse();
+
+    if (typeof asyncCallback === 'function') {
+      asyncCallback();
+    }
   };
 
   this.foldAt = function(coefficient) {
@@ -666,6 +723,40 @@ var FancyContent = function(wrapper) {
   };
 
   this.wrapper = wrapper;
+};
+
+var MagicCurtainCluster = function(cluster) {
+  var initialised, title, text, fancyTitle, fancyText;
+
+  title = cluster.querySelector('[data-title]');
+  text = cluster.querySelector('[data-text]');
+
+  this.fold = function() {
+    cluster.classList.add('visible');
+
+    if (!initialised) {
+      fancyTitle = new FancyContent(title);
+      fancyText = new FancyContent(text);
+
+      initialised = true;
+    }
+
+    fancyTitle.fold();
+    fancyText.fold();
+  };
+
+  this.unfold = function() {
+    new Chain()
+      .add(function() {
+        fancyTitle.unfold();
+        fancyText.unfold();
+      })
+      .wait(0.5)
+      .add(function() {
+        cluster.classList.remove('visible');
+      })
+      .run();
+  };
 };
 
 FancyContent.initWrappers = function(context) {
@@ -790,12 +881,12 @@ var main = function() {
   };
 
   module.init = function() {
+    FancyContent.initWrappers();
+
     commonCurtain = new MagicCurtain(v.commonCurtain);
     commonCurtain.init();
-    magicControls.initCurtain(commonCurtain);
-    magicControls.initCurtainCloseTrigger(commonCurtain, v.commonCurtainCloseTrigger);
-
-    FancyContent.initWrappers();
+    magicControls.initCurtain(commonCurtain, v.commonCurtainCloseTrigger);
+    magicControls.initCurtainClusters();
 
     fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
     fancyIntroText = new FancyContent(v.introText);

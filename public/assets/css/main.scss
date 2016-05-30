@@ -459,30 +459,6 @@ div.magic-disk {
     }
   }
 
-  &.state-a {
-    div.shadow-a {
-      z-index: 10;
-    }
-  }
-
-  &.state-b {
-    div.shadow-b {
-      z-index: 20;
-    }
-  }
-
-  &.state-c {
-    div.shadow-c {
-      z-index: 30;
-    }
-  }
-
-  &.state-d {
-    div.shadow-d {
-      z-index: 40;
-    }
-  }
-
   &.style-1 {
     div.disk,
     div.shadow-d {
@@ -625,53 +601,6 @@ div.magic-curtain {
     width: 0;
   }
 
-  div.close {
-    position: absolute;
-    right: -50px;
-    top: 20px;
-    font-size: 5em;
-    cursor: default;
-    visibility: hidden;
-    pointer-events: none;
-    transition: 500ms right;
-  }
-
-  &.state-0 {
-    //
-  }
-
-  &.state-a {
-    div.shadow-a {
-      z-index: 10;
-    }
-  }
-
-  &.state-b {
-    div.shadow-b {
-      z-index: 20;
-    }
-  }
-
-  &.state-c {
-    div.shadow-c {
-      z-index: 30;
-    }
-  }
-
-  &.state-d {
-    div.shadow-d,
-    div.content {
-      z-index: 40;
-    }
-
-    div.close {
-      right: 70px;
-      z-index: 100;
-      visibility: visible;
-      pointer-events: auto;
-    }
-  }
-
   &.style-0 {
     div.shadow-d {
       background: $k1;
@@ -705,6 +634,69 @@ div.magic-curtain {
 
     div.shadow-c {
       background: rgba($km1, 0.75);
+    }
+  }
+}
+
+div.magic-curtain-close {
+  position: absolute;
+  right: -50px;
+  top: 20px;
+  font-size: 5em;
+  cursor: default;
+  visibility: hidden;
+  pointer-events: none;
+  transition: 500ms right;
+
+  &.visible {
+    right: 70px;
+    z-index: 350;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+div.magic-curtain-cluster {
+  position: absolute;
+  z-index: 300;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+
+  &.visible {
+    display: block;
+  }
+
+  div.title {
+    padding: 50px 0 40px 100px;
+    box-sizing: border-box;
+
+    div.fancy-text > div {
+      font-size: 3em;
+      font-weight: 600;
+    }
+  }
+
+  div.text {
+    padding: 0 100px;
+    box-sizing: border-box;
+
+    div.fancy-text > div {
+      font-size: 1.5em;
+      letter-spacing: 0.02em;
+      line-height: 150%;
+
+      p {
+        &:first-child {
+          margin-top: 0;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 }
@@ -748,6 +740,17 @@ div.fancy-text {
     div.shadow-a,
     div.shadow-b {
       color: rgba($k1, 0.25);
+    }
+  }
+
+  &.style-b {
+    div.main {
+      color: $k2;
+    }
+
+    div.shadow-a,
+    div.shadow-b {
+      color: rgba($k2, 0.25);
     }
   }
 
