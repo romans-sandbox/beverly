@@ -1,3 +1,23 @@
+var common = function() {
+  var module = {}, v = {};
+
+  module.areaButton = function(area, button) {
+    area.addEventListener('mouseover', function() {
+      button.classList.add('forced-hover');
+    });
+
+    area.addEventListener('mouseout', function() {
+      button.classList.remove('forced-hover');
+    });
+
+    area.addEventListener('click', function() {
+      button.click();
+    });
+  };
+
+  return module;
+}();
+
 var lipsDrawing = function() {
   var module = {}, v = {};
 
@@ -766,6 +786,7 @@ var main = function() {
     v.lipsDrawingUpperContainer = document.querySelector('#lips-drawing-upper-container');
     v.lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
     v.productPreviewMidnight = document.querySelector('#product-preview-midnight');
+    v.productPreviewMidnightButton = document.querySelector('#product-preview-midnight-button');
   };
 
   module.init = function() {
@@ -857,6 +878,8 @@ var main = function() {
           });
         });
       });
+
+    common.areaButton(v.productPreviewMidnight, v.productPreviewMidnightButton);
   };
 
   module.run = function() {
