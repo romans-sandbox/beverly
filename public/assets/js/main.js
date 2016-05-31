@@ -231,7 +231,7 @@ var lipsDrawing = function() {
     }, false);
   };
 
-  module.initLower = function(threshold, style, callback) {
+  module.initLower = function(threshold, style, videoPlayback, callback) {
     (function() {
       var point;
 
@@ -327,6 +327,10 @@ var lipsDrawing = function() {
         v.lowerControl.style.left = point.x + 'px';
         v.lowerControl.style.bottom = point.y + 'px';
         v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
+
+        videoPlayback.play();
+        videoPlayback.currentTime = videoPlayback.duration * status.lower.progress;
+        videoPlayback.pause();
       }
     }, false);
   };
@@ -880,6 +884,7 @@ var main = function() {
     v.lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
     v.productPreviewMidnight = document.querySelector('#product-preview-midnight');
     v.productPreviewMidnightButton = document.querySelector('#product-preview-midnight-button');
+    v.applicationVideo1 = document.querySelector('#application-video-1');
   };
 
   module.init = function() {
@@ -959,7 +964,7 @@ var main = function() {
 
           v.productPreviewMidnight.classList.add('visible');
 
-          lipsDrawing.initLower(0.5, style, function() {
+          lipsDrawing.initLower(0.5, style, v.applicationVideo1, function() {
             v.lipsDrawingLowerContainer.classList.remove('visible');
             v.lipsDrawingUpperContainer.classList.add('visible');
 
