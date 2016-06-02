@@ -1039,7 +1039,7 @@ var main = function() {
 
     fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
     fancyIntroText = new FancyContent(v.introText);
-
+    
     drawingCanvasLower1 = new CanvassedFramesWrapper(v.drawingCanvasLower1, 58, 'assets/img/ld1/lower?.jpg');
 
     drawingCanvasLower1.init(function() {
@@ -1112,6 +1112,8 @@ var main = function() {
 
           v.productPreviewMidnight.classList.add('visible');
 
+          v.drawingCanvasLower1.classList.add('visible');
+          
           lipsDrawing.initLower(0.5, style, drawingCanvasLower1, function() {
             v.lipsDrawingLowerContainer.classList.remove('visible');
             v.lipsDrawingUpperContainer.classList.add('visible');

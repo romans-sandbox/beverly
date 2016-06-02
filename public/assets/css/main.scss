@@ -876,7 +876,11 @@ div.lips-drawing-video {
 }
 
 canvas.lips-drawing {
-  display: block;
+  display: none;
+
+  &.visible {
+    display: block;
+  }
 }
 
 div.product-preview {
