@@ -1042,6 +1042,9 @@ var main = function() {
     v.drawingVideo1 = document.querySelector('#drawing-video-1');
     v.drawingCanvasLower1 = document.querySelector('#lips-drawing-canvas-lower-1');
     v.drawingCanvasUpper1 = document.querySelector('#lips-drawing-canvas-upper-1');
+    v.lookVideoContainer = document.querySelector('#look-video-container');
+    v.lookVideo = document.querySelector('#look-video');
+    v.lookCluster = document.querySelector('#look-cluster');
   };
 
   module.init = function() {
@@ -1064,7 +1067,7 @@ var main = function() {
       drawingCanvasLower1.seek(0);
     });
 
-    drawingCanvasUpper1 = new CanvassedFramesWrapper(v.drawingCanvasUpper1, 37, 'assets/img/ld1/upper?.jpg');
+    drawingCanvasUpper1 = new CanvassedFramesWrapper(v.drawingCanvasUpper1, 59, 'assets/img/ld1/upper?.jpg');
 
     drawingCanvasUpper1.init(function() {
       drawingCanvasUpper1.seek(0);
@@ -1180,7 +1183,6 @@ var main = function() {
 
                     v.drawingVideoContainer1.classList.remove('visible');
                     v.drawingVideo1.pause();
-                    v.drawingVideo1.currentTime = 10;
 
                     lipsDrawing.initUpper(0.5, style, drawingCanvasUpper1, function() {
                       new Chain()
@@ -1188,14 +1190,22 @@ var main = function() {
                           v.lipsDrawingUpperContainer.classList.remove('visible');
                           v.drawingCanvasUpper1.classList.remove('visible');
 
-                          v.drawingVideoContainer1.classList.add('visible');
-                          v.drawingVideo1.play();
+                          v.lipsDrawingCluster.classList.remove('visible');
+
+                          v.productPreviewMidnight.classList.remove('visible');
+                        })
+                        .wait(2)
+                        .add(function() {
+                          v.lookCluster.classList.add('visible');
+
+                          v.lookVideoContainer.classList.add('visible');
+                          v.lookVideo.currentTime = 0;
+                          v.lookVideo.play();
+
+                          proxy.lookCurtain.unfold();
                         })
                         .run();
                     });
-
-                    v.drawingVideoContainer1.classList.remove('visible');
-                    v.drawingVideo1.pause();
                   })
                   .run();
               });
