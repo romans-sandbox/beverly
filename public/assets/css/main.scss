@@ -369,7 +369,7 @@ div.magic-disk {
     width: 70px;
     height: 70px;
     border-radius: 100%;
-    border: 5px solid rgba($k1, 0.25);
+    border: 5px solid rgba($k1, 0.9);
     box-sizing: border-box;
     transition: 200ms border-width;
   }
@@ -884,7 +884,8 @@ div.intro-text {
 }
 
 div.lips-drawing-video,
-div.mimics-video {
+div.mimics-video,
+div.lipstick-video {
   display: none;
   height: 100%;
 

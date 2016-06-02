@@ -1017,6 +1017,8 @@ var main = function() {
     v.productPreviewMidnightButton = document.querySelector('#product-preview-midnight-button');
     v.mimicsVideoContainer = document.querySelector('#mimics-video-container');
     v.mimicsVideo = document.querySelector('#mimics-video');
+    v.lipstickVideoContainer = document.querySelector('#lipstick-video-container');
+    v.lipstickVideo = document.querySelector('#lipstick-video');
     v.drawingVideoContainer1 = document.querySelector('#drawing-video-container-1');
     v.drawingVideo1 = document.querySelector('#drawing-video-1');
     v.drawingCanvasLower1 = document.querySelector('#lips-drawing-canvas-lower-1');
@@ -1090,6 +1092,11 @@ var main = function() {
         v.mimicsVideo.pause();
 
         v.lipstickChoiceCluster.classList.add('visible');
+
+        v.lipstickVideoContainer.classList.add('visible');
+        v.lipstickVideo.currentTime = 0;
+        v.lipstickVideo.play();
+
         magicControls.initRadial(v.lipstickChoiceCluster, 0.5, function(wrapper) {
           var style;
 
@@ -1109,6 +1116,9 @@ var main = function() {
             : null;
 
           v.lipstickChoiceCluster.classList.remove('visible');
+
+          v.lipstickVideoContainer.classList.remove('visible');
+          v.lipstickVideo.pause();
 
           v.productPreviewMidnight.classList.add('visible');
 
