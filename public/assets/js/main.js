@@ -545,6 +545,12 @@ var magicControls = function() {
                 curtain.overrideFoldDuration(duration);
               }
 
+              curtain.setStyle(
+                wrapper.hasAttribute('data-style')
+                  ? wrapper.getAttribute('data-style')
+                  : '0'
+              );
+
               curtain.fold(function() {
                 if (wrapper.hasAttribute('data-curtain-cluster-target')) {
                   curtainClusterTarget = magicControls.findCurtainCluster(
@@ -702,6 +708,12 @@ var MagicCurtain = function(curtain) {
     timeline.pause();
 
     initialised = true;
+  };
+
+  this.setStyle = function(style) {
+    curtain.classList.remove('style-0');
+    curtain.classList.remove('style-1');
+    curtain.classList.add('style-' + style);
   };
 
   this.fold = function(asyncCallback) {
