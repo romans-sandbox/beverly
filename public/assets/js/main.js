@@ -1144,7 +1144,7 @@ var main = function() {
         v.mimicsVideo.currentTime = 0;
         v.mimicsVideo.play();
       })
-      .wait(4)
+      .wait(3)
       .add(function() {
         v.mimicsCluster.classList.remove('visible');
         v.mimicsVideoContainer.classList.remove('visible');
