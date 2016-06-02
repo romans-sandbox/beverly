@@ -201,7 +201,7 @@ var lipsDrawing = function() {
     container.classList.add(style);
   }
 
-  module.initUpper = function(threshold, style, callback) {
+  module.initUpper = function(threshold, style, canvassedFramesWrapper, callback) {
     (function() {
       var point;
 
@@ -246,6 +246,8 @@ var lipsDrawing = function() {
                 v.upperControl.style.right = point.x + 'px';
                 v.upperControl.style.top = point.y + 'px';
                 v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
+
+                canvassedFramesWrapper.seek(o.x);
               },
               onComplete: function() {
                 status.upper.prevX = 0;
@@ -264,6 +266,8 @@ var lipsDrawing = function() {
               v.upperControl.style.right = point.x + 'px';
               v.upperControl.style.top = point.y + 'px';
               v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
+
+              canvassedFramesWrapper.seek(o.x);
             },
             onComplete: function() {
               status.upper.prevX = 1 - options.pointDiff;
@@ -297,6 +301,8 @@ var lipsDrawing = function() {
         v.upperControl.style.right = point.x + 'px';
         v.upperControl.style.top = point.y + 'px';
         v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
+
+        canvassedFramesWrapper.seek(status.upper.progress);
       }
     }, false);
   };
@@ -978,7 +984,7 @@ var main = function() {
 
   var commonCurtain, fancyIntroAbhLogo, fancyIntroText;
   var introChain, getStartedChain;
-  var drawingCanvasLower1;
+  var drawingCanvasLower1, drawingCanvasUpper1;
 
   module.query = function() {
     v.commonCurtain = document.querySelector('#common-curtain');
@@ -997,8 +1003,10 @@ var main = function() {
     v.lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
     v.productPreviewMidnight = document.querySelector('#product-preview-midnight');
     v.productPreviewMidnightButton = document.querySelector('#product-preview-midnight-button');
+    v.drawingVideoContainer1 = document.querySelector('#drawing-video-container-1');
     v.drawingVideo1 = document.querySelector('#drawing-video-1');
     v.drawingCanvasLower1 = document.querySelector('#lips-drawing-canvas-lower-1');
+    v.drawingCanvasUpper1 = document.querySelector('#lips-drawing-canvas-upper-1');
   };
 
   module.init = function() {
@@ -1016,6 +1024,12 @@ var main = function() {
 
     drawingCanvasLower1.init(function() {
       drawingCanvasLower1.seek(0);
+    });
+
+    drawingCanvasUpper1 = new CanvassedFramesWrapper(v.drawingCanvasUpper1, 37, 'assets/img/ld1/upper?.jpg');
+
+    drawingCanvasUpper1.init(function() {
+      drawingCanvasUpper1.seek(0);
     });
 
     introChain = new Chain()
@@ -1060,13 +1074,6 @@ var main = function() {
         magicControls.initRadial(v.lipstickChoiceCluster, 0.5, function(wrapper) {
           var style;
 
-          v.lipstickChoiceCluster.classList.remove('visible');
-          v.lipsDrawingCluster.classList.add('visible');
-
-          lipsDrawing.query();
-
-          v.lipsDrawingLowerContainer.classList.add('visible');
-
           // is there a better way?
           style = wrapper.classList.contains('style-1')
             ? 'style-1'
@@ -1082,20 +1089,67 @@ var main = function() {
             ? 'style-6'
             : null;
 
+          v.lipstickChoiceCluster.classList.remove('visible');
+
           v.productPreviewMidnight.classList.add('visible');
 
-          v.drawingCanvasLower1.classList.add('visible');
+          new Chain()
+            .add(function() {
+              v.lipsDrawingCluster.classList.add('visible');
+              v.drawingVideoContainer1.classList.add('visible');
+              v.drawingVideo1.currentTime = 0;
+              v.drawingVideo1.play();
+            })
+            .wait(1.9)
+            .add(function() {
+              v.drawingCanvasLower1.classList.add('visible');
 
-          lipsDrawing.initLower(0.5, style, drawingCanvasLower1, function() {
-            v.lipsDrawingLowerContainer.classList.remove('visible');
-            v.lipsDrawingUpperContainer.classList.add('visible');
+              lipsDrawing.query();
 
-            lipsDrawing.initUpper(0.5, style, function() {
-              v.lipsDrawingUpperContainer.classList.remove('visible');
+              v.lipsDrawingLowerContainer.classList.add('visible');
 
-              alert('What now?');
-            });
-          });
+              v.drawingVideoContainer1.classList.remove('visible');
+              v.drawingVideo1.pause();
+              v.drawingVideo1.currentTime = 5.65;
+
+              lipsDrawing.initLower(0.5, style, drawingCanvasLower1, function() {
+                new Chain()
+                  .add(function() {
+                    v.lipsDrawingLowerContainer.classList.remove('visible');
+                    v.drawingCanvasLower1.classList.remove('visible');
+
+                    v.drawingVideoContainer1.classList.add('visible');
+                    v.drawingVideo1.play();
+                  })
+                  .wait(2)
+                  .add(function() {
+                    v.drawingCanvasUpper1.classList.add('visible');
+
+                    v.lipsDrawingUpperContainer.classList.add('visible');
+
+                    v.drawingVideoContainer1.classList.remove('visible');
+                    v.drawingVideo1.pause();
+                    v.drawingVideo1.currentTime = 10;
+
+                    lipsDrawing.initUpper(0.5, style, drawingCanvasUpper1, function() {
+                      new Chain()
+                        .add(function() {
+                          v.lipsDrawingUpperContainer.classList.remove('visible');
+                          v.drawingCanvasUpper1.classList.remove('visible');
+
+                          v.drawingVideoContainer1.classList.add('visible');
+                          v.drawingVideo1.play();
+                        })
+                        .run();
+                    });
+
+                    v.drawingVideoContainer1.classList.remove('visible');
+                    v.drawingVideo1.pause();
+                  })
+                  .run();
+              });
+            })
+            .run();
         });
       });
 
