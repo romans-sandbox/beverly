@@ -532,6 +532,20 @@ div.magic-curtain {
     width: 0;
   }
 
+  &.right {
+    left: auto;
+    right: 0;
+
+    div.shadow-a,
+    div.shadow-b,
+    div.shadow-c,
+    div.shadow-d,
+    div.content {
+      left: auto;
+      right: 0;
+    }
+  }
+
   &.style-0 {
     div.shadow-d {
       background: $k1;

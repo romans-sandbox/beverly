@@ -248,6 +248,12 @@ var lipsDrawing = function() {
                 v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
 
                 canvassedFramesWrapper.seek(o.x);
+
+                if (o.x > 0.65) {
+                  proxy.lookCurtain.foldAt((o.x - 0.65) / 0.35);
+                } else {
+                  proxy.lookCurtain.foldAt(0);
+                }
               },
               onComplete: function() {
                 status.upper.prevX = 0;
@@ -268,6 +274,12 @@ var lipsDrawing = function() {
               v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
 
               canvassedFramesWrapper.seek(o.x);
+
+              if (o.x > 0.65) {
+                proxy.lookCurtain.foldAt((o.x - 0.65) / 0.35);
+              } else {
+                proxy.lookCurtain.foldAt(0);
+              }
             },
             onComplete: function() {
               status.upper.prevX = 1 - options.pointDiff;
@@ -303,6 +315,12 @@ var lipsDrawing = function() {
         v.upperControlArrow.style.transform = 'rotate(' + (point.angle) + 'deg)';
 
         canvassedFramesWrapper.seek(status.upper.progress);
+
+        if (status.upper.progress > 0.65) {
+          proxy.lookCurtain.foldAt((status.upper.progress - 0.65) / 0.35);
+        } else {
+          proxy.lookCurtain.foldAt(0);
+        }
       }
     }, false);
   };
@@ -665,9 +683,7 @@ var MagicCurtain = function(curtain) {
             firstShadowName = shadowName;
           }
 
-          timeline.fromTo(shadows[i], options.durations.fold / shadows.length, {
-            width: 0
-          }, {
+          timeline.to(shadows[i], options.durations.fold / shadows.length, {
             width: sizeCoefficient * 100 + '%',
             ease: Power4.easeOut,
             onStart: function() {
@@ -991,6 +1007,8 @@ var Chain = function() {
   };
 };
 
+var proxy = {};
+
 var main = function() {
   var module = {}, v = {};
 
@@ -1001,6 +1019,7 @@ var main = function() {
   module.query = function() {
     v.commonCurtain = document.querySelector('#common-curtain');
     v.commonCurtainCloseTrigger = document.querySelector('#common-curtain-close-trigger');
+    v.lookCurtain = document.querySelector('#look-curtain');
     v.introCluster = document.querySelector('#intro-cluster');
     v.introAbhLogo = document.querySelector('#intro-abh-logo');
     v.introText = document.querySelector('#intro-text');
@@ -1032,6 +1051,9 @@ var main = function() {
     commonCurtain.init();
     magicControls.initCurtain(commonCurtain, v.commonCurtainCloseTrigger);
     magicControls.initCurtainClusters();
+
+    proxy.lookCurtain = new MagicCurtain(v.lookCurtain);
+    proxy.lookCurtain.init();
 
     fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
     fancyIntroText = new FancyContent(v.introText);
