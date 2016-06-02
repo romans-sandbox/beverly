@@ -92,6 +92,8 @@ div.lipstick-colors-container {
   left: 50%;
   bottom: 100px;
   transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
 }
 
 div.lips-drawing-container {
@@ -357,7 +359,7 @@ div.simple-button {
 div.magic-disk {
   position: relative;
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 15px;
 
   &:last-child {
     margin-right: 0;
@@ -369,9 +371,7 @@ div.magic-disk {
     width: 70px;
     height: 70px;
     border-radius: 100%;
-    border: 5px solid rgba($k1, 0.9);
     box-sizing: border-box;
-    transition: 200ms border-width;
   }
 
   div.shadow-a,
@@ -386,7 +386,6 @@ div.magic-disk {
   &.state-0 {
     div.disk {
       z-index: 100;
-      border-width: 0;
     }
   }
 
