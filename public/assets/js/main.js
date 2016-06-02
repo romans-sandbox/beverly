@@ -85,6 +85,37 @@ var common = function() {
     });
   };
 
+  module.goFullScreen = function() {
+    var f, fOut, on;
+
+    on = document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement;
+
+    f =
+      document.documentElement.requestFullscreen ||
+      document.documentElement.mozRequestFullScreen ||
+      document.documentElement.msRequestFullscreen ||
+      document.documentElement.webkitRequestFullscreen;
+
+    fOut =
+      document.exitFullscreen ||
+      document.mozCancelFullScreen ||
+      document.msExitFullscreen ||
+      document.webkitExitFullscreen;
+
+    if (on) {
+      if (typeof fOut === 'function') {
+        fOut.call(document);
+      }
+    } else {
+      if (typeof f === 'function') {
+        f.call(document.documentElement);
+      }
+    }
+  };
+
   return module;
 }();
 
@@ -1045,6 +1076,7 @@ var main = function() {
     v.lookVideoContainer = document.querySelector('#look-video-container');
     v.lookVideo = document.querySelector('#look-video');
     v.lookCluster = document.querySelector('#look-cluster');
+    v.fullScreenButton = document.querySelector('#full-screen-button');
   };
 
   module.init = function() {
@@ -1072,6 +1104,8 @@ var main = function() {
     drawingCanvasUpper1.init(function() {
       drawingCanvasUpper1.seek(0);
     });
+
+    v.fullScreenButton.addEventListener('click', common.goFullScreen);
 
     introChain = new Chain()
       .wait(1)
