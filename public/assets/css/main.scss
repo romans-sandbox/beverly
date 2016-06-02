@@ -361,6 +361,7 @@ div.magic-disk {
   div.shadow-c,
   div.shadow-d {
     position: absolute;
+    z-index: 10;
     border-radius: 100%;
   }
 
