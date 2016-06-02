@@ -1025,7 +1025,7 @@ var main = function() {
     v.lipsDrawingLowerContainer = document.querySelector('#lips-drawing-lower-container');
     v.productPreviewMidnight = document.querySelector('#product-preview-midnight');
     v.productPreviewMidnightButton = document.querySelector('#product-preview-midnight-button');
-    v.applicationVideo1 = document.querySelector('#application-video-1');
+    v.drawingVideo1 = document.querySelector('#drawing-video-1');
     v.drawingCanvasLower1 = document.querySelector('#lips-drawing-canvas-lower-1');
   };
 

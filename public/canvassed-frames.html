@@ -15,15 +15,15 @@
   </style>
 </head>
 <body>
-  <video id="application-video-1" width="500" controls>
-    <source src="assets/video/application-1.mp4" type="video/mp4">
+  <video id="drawing-video-1" width="500" controls>
+    <source src="assets/video/drawing-1.mp4" type="video/mp4">
   </video>
   <img src="" alt="" id="result">
   <a href="" id="magic" target="_blank">magic</a>
   <script>
     var v = {};
 
-    v.applicationVideo1 = document.querySelector('#application-video-1');
+    v.drawingVideo1 = document.querySelector('#drawing-video-1');
     v.result = document.querySelector('#result');
     v.magic = document.querySelector('#magic');
 
@@ -64,7 +64,7 @@
       };
     };
 
-    var myCanvassedFramesWrapper = new CanvassedFramesWrapper(v.applicationVideo1);
+    var myCanvassedFramesWrapper = new CanvassedFramesWrapper(v.drawingVideo1);
     myCanvassedFramesWrapper.capture(1.9, 5.65, 9, function(framesData, framesCount, frameWidth, frameHeight) {
       /*v.result.width = frameWidth;
       v.result.height = frameHeight * framesCount;
