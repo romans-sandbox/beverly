@@ -1063,7 +1063,7 @@ var main = function() {
       })
       .wait(1)
       .add(function() {
-        v.introCluster.classList.add('hidden');
+        v.introCluster.classList.remove('visible');
         v.mimicsCluster.classList.add('visible');
       })
       .wait(1)
