@@ -276,6 +276,8 @@ var lipsDrawing = function() {
                 v.lowerControl.style.left = point.x + 'px';
                 v.lowerControl.style.bottom = point.y + 'px';
                 v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
+
+                framesSprite.seek(o.x);
               },
               onComplete: function() {
                 status.lower.prevX = 0;
@@ -294,6 +296,8 @@ var lipsDrawing = function() {
               v.lowerControl.style.left = point.x + 'px';
               v.lowerControl.style.bottom = point.y + 'px';
               v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
+
+              framesSprite.seek(o.x);
             },
             onComplete: function() {
               status.lower.prevX = 1 - options.pointDiff;
