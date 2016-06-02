@@ -875,18 +875,8 @@ div.lips-drawing-video {
   }
 }
 
-div.lips-drawing-sprite {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  //background-size: 1280px 720px;
-  background-position: 0 0;
-
-  &.lower-1 {
-    background-image: url($img-dir + '/application-lower-1.jpg');
-  }
+canvas.lips-drawing {
+  display: block;
 }
 
 div.product-preview {

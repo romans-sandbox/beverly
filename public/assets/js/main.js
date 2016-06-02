@@ -1,3 +1,73 @@
+var vendor = {
+  /** @see http://stackoverflow.com/a/21395720 */
+  drawImageProp: function(ctx, img, x, y, w, h, offsetX, offsetY) {
+    if (arguments.length === 2) {
+      x = y = 0;
+      w = ctx.canvas.width;
+      h = ctx.canvas.height;
+    }
+
+    /// default offset is center
+    offsetX = offsetX ? offsetX : 0.5;
+    offsetY = offsetY ? offsetY : 0.5;
+
+    /// keep bounds [0.0, 1.0]
+    if (offsetX < 0) {
+      offsetX = 0;
+    }
+    if (offsetY < 0) {
+      offsetY = 0;
+    }
+    if (offsetX > 1) {
+      offsetX = 1;
+    }
+    if (offsetY > 1) {
+      offsetY = 1;
+    }
+
+    var iw = img.width,
+      ih = img.height,
+      r = Math.min(w / iw, h / ih),
+      nw = iw * r,   /// new prop. width
+      nh = ih * r,   /// new prop. height
+      cx, cy, cw, ch, ar = 1;
+
+    /// decide which gap to fill
+    if (nw < w) {
+      ar = w / nw;
+    }
+    if (nh < h) {
+      ar = h / nh;
+    }
+    nw *= ar;
+    nh *= ar;
+
+    /// calc source rectangle
+    cw = iw / (nw / w);
+    ch = ih / (nh / h);
+
+    cx = (iw - cw) * offsetX;
+    cy = (ih - ch) * offsetY;
+
+    /// make sure source rectangle is valid
+    if (cx < 0) {
+      cx = 0;
+    }
+    if (cy < 0) {
+      cy = 0;
+    }
+    if (cw > iw) {
+      cw = iw;
+    }
+    if (ch > ih) {
+      ch = ih;
+    }
+
+    /// fill image in dest. rectangle
+    ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
+  }
+};
+
 var common = function() {
   var module = {}, v = {};
 
@@ -231,7 +301,7 @@ var lipsDrawing = function() {
     }, false);
   };
 
-  module.initLower = function(threshold, style, framesSprite, callback) {
+  module.initLower = function(threshold, style, canvassedFramesWrapper, callback) {
     (function() {
       var point;
 
@@ -277,7 +347,7 @@ var lipsDrawing = function() {
                 v.lowerControl.style.bottom = point.y + 'px';
                 v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
 
-                framesSprite.seek(o.x);
+                canvassedFramesWrapper.seek(o.x);
               },
               onComplete: function() {
                 status.lower.prevX = 0;
@@ -297,7 +367,7 @@ var lipsDrawing = function() {
               v.lowerControl.style.bottom = point.y + 'px';
               v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
 
-              framesSprite.seek(o.x);
+              canvassedFramesWrapper.seek(o.x);
             },
             onComplete: function() {
               status.lower.prevX = 1 - options.pointDiff;
@@ -332,7 +402,7 @@ var lipsDrawing = function() {
         v.lowerControl.style.bottom = point.y + 'px';
         v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
 
-        framesSprite.seek(status.lower.progress);
+        canvassedFramesWrapper.seek(status.lower.progress);
       }
     }, false);
   };
@@ -800,13 +870,71 @@ FancyContent.initWrappers = function(context) {
   }
 };
 
-var FramesSprite = function(sprite, framesCount, frameHeight) {
+var CanvassedFramesWrapper = function(canvas, framesCount, framePathPattern) {
+  var self = this;
+  var frames = [], framesLoaded = 0, i, ctx;
+  var lastProgress = null;
+
+  this.init = function(callback) {
+    ctx = canvas.getContext('2d');
+
+    for (i = 0; i < framesCount; i++) {
+      (function(i, image) {
+        image = new Image();
+
+        image.addEventListener('load', function() {
+          framesLoaded++;
+
+          if (framesLoaded === framesCount) {
+            if (typeof callback === 'function') {
+              callback.apply(this);
+            }
+          }
+        });
+
+        image.src = framePathPattern.replace('?', function() {
+          var n;
+
+          n = i + 1;
+
+          if (n < 10) {
+            n = '0' + n;
+          }
+
+          return n;
+        });
+
+        frames.push(
+          image
+        );
+      })(
+        i
+      );
+    }
+
+    function canvasToFit() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      if (lastProgress !== null) {
+        self.seek(lastProgress);
+      }
+    }
+
+    canvasToFit();
+
+    window.addEventListener('resize', canvasToFit);
+    window.addEventListener('orientationchange', canvasToFit);
+  };
+
   this.seek = function(progress) {
     var frameIndex;
 
-    frameIndex = Math.floor(framesCount * progress);
+    frameIndex = Math.floor((framesCount - 1) * progress);
 
-    sprite.style.backgroundPosition = '0 -' + (frameHeight * frameIndex) + 'px';
+    vendor.drawImageProp(ctx, frames[frameIndex], 0, 0, canvas.width, canvas.height);
+
+    lastProgress = progress;
   };
 };
 
@@ -878,7 +1006,7 @@ var main = function() {
 
   var commonCurtain, fancyIntroAbhLogo, fancyIntroText;
   var introChain, getStartedChain;
-  var lipsDrawingSpriteLower1;
+  var drawingCanvasLower1;
 
   module.query = function() {
     v.commonCurtain = document.querySelector('#common-curtain');
@@ -898,7 +1026,7 @@ var main = function() {
     v.productPreviewMidnight = document.querySelector('#product-preview-midnight');
     v.productPreviewMidnightButton = document.querySelector('#product-preview-midnight-button');
     v.applicationVideo1 = document.querySelector('#application-video-1');
-    v.applicationSpriteLower1 = document.querySelector('#application-sprite-lower-1');
+    v.drawingCanvasLower1 = document.querySelector('#lips-drawing-canvas-lower-1');
   };
 
   module.init = function() {
@@ -912,7 +1040,11 @@ var main = function() {
     fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
     fancyIntroText = new FancyContent(v.introText);
 
-    lipsDrawingSpriteLower1 = new FramesSprite(v.applicationSpriteLower1, 32, 720);
+    drawingCanvasLower1 = new CanvassedFramesWrapper(v.drawingCanvasLower1, 58, 'assets/img/ld1/lower?.jpg');
+
+    drawingCanvasLower1.init(function() {
+      drawingCanvasLower1.seek(0);
+    });
 
     introChain = new Chain()
       .wait(1)
@@ -980,7 +1112,7 @@ var main = function() {
 
           v.productPreviewMidnight.classList.add('visible');
 
-          lipsDrawing.initLower(0.5, style, lipsDrawingSpriteLower1, function() {
+          lipsDrawing.initLower(0.5, style, drawingCanvasLower1, function() {
             v.lipsDrawingLowerContainer.classList.remove('visible');
             v.lipsDrawingUpperContainer.classList.add('visible');
 

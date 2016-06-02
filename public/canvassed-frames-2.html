@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>(sandbox) canvassed frames 2</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    #main {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="main"></canvas>
+  <script>
+    function drawImageProp(ctx, img, x, y, w, h, offsetX, offsetY) {
+
+      if (arguments.length === 2) {
+        x = y = 0;
+        w = ctx.canvas.width;
+        h = ctx.canvas.height;
+      }
+
+      /// default offset is center
+      offsetX = offsetX ? offsetX : 0.5;
+      offsetY = offsetY ? offsetY : 0.5;
+
+      /// keep bounds [0.0, 1.0]
+      if (offsetX < 0) offsetX = 0;
+      if (offsetY < 0) offsetY = 0;
+      if (offsetX > 1) offsetX = 1;
+      if (offsetY > 1) offsetY = 1;
+
+      var iw = img.width,
+          ih = img.height,
+          r = Math.min(w / iw, h / ih),
+          nw = iw * r,   /// new prop. width
+          nh = ih * r,   /// new prop. height
+          cx, cy, cw, ch, ar = 1;
+
+      /// decide which gap to fill
+      if (nw < w) ar = w / nw;
+      if (nh < h) ar = h / nh;
+      nw *= ar;
+      nh *= ar;
+
+      /// calc source rectangle
+      cw = iw / (nw / w);
+      ch = ih / (nh / h);
+
+      cx = (iw - cw) * offsetX;
+      cy = (ih - ch) * offsetY;
+
+      /// make sure source rectangle is valid
+      if (cx < 0) cx = 0;
+      if (cy < 0) cy = 0;
+      if (cw > iw) cw = iw;
+      if (ch > ih) ch = ih;
+
+      /// fill image in dest. rectangle
+      ctx.drawImage(img, cx, cy, cw, ch,  x, y, w, h);
+    }
+
+    var v = {};
+
+    v.main = document.querySelector('#main');
+
+    var CanvassedFramesWrapper = function(canvas, framesCount, framePathPattern) {
+      var self = this;
+      var frames = [], i, ctx;
+      var lastProgress = null;
+
+      this.init = function() {
+        ctx = canvas.getContext('2d');
+
+        for (i = 0; i < framesCount; i++) {
+          (function(i, image) {
+            image = new Image();
+
+            image.src = framePathPattern.replace('?', function() {
+              var n;
+
+              n = i + 1;
+
+              if (n < 10) {
+                n = '0' + n;
+              }
+
+              return n;
+            });
+
+            frames.push(
+                image
+            );
+          })(
+              i
+          );
+        }
+
+        function canvasToFit() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+
+          if (lastProgress !== null) {
+            self.seek(lastProgress);
+          }
+        }
+
+        canvasToFit();
+
+        window.addEventListener('resize', canvasToFit);
+        window.addEventListener('orientationchange', canvasToFit);
+      };
+
+      this.seek = function(progress) {
+        var frameIndex;
+
+        frameIndex = Math.floor(framesCount * progress);
+
+        drawImageProp(ctx, frames[frameIndex], 0, 0, canvas.width, canvas.height);
+
+        lastProgress = progress;
+      };
+    };
+
+    var lower1 = new CanvassedFramesWrapper(v.main, 59, 'assets/img/ld1/lower?.jpg');
+
+    lower1.init();
+
+    var p = 0;
+
+    var x = window.setInterval(function() {
+      if (p > 1) {
+        window.clearInterval(x);
+      } else {
+        lower1.seek(p);
+        p += 0.01;
+      }
+    }, 1 / 60 * 1000);
+  </script>
+</body>
+</html>
