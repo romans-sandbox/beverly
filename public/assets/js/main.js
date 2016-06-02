@@ -938,34 +938,6 @@ var CanvassedFramesWrapper = function(canvas, framesCount, framePathPattern) {
   };
 };
 
-///
-
-// magicControls.initRadial();
-
-// var commonCurtain = new MagicCurtain(document.querySelector('#common-curtain'));
-// commonCurtain.init();
-// magicControls.initCurtain(commonCurtain);
-// magicControls.initCurtainCloseTrigger(commonCurtain, document.querySelector('#common-curtain-close-trigger'));
-
-///
-
-// FancyContent.initWrappers();
-//
-// var myFancyContent = new FancyContent(document.querySelector('#my-fancy-content'));
-// myFancyContent.fold();
-//
-// window.setTimeout(function() {
-//   myFancyContent.unfold();
-//
-//   window.setTimeout(function() {
-//     myFancyContent.fold();
-//
-//     window.setTimeout(function() {
-//       myFancyContent.unfold();
-//     }, 2000);
-//   }, 2000);
-// }, 2000);
-
 var Chain = function() {
   var raw = [];
 
@@ -1039,7 +1011,7 @@ var main = function() {
 
     fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
     fancyIntroText = new FancyContent(v.introText);
-    
+
     drawingCanvasLower1 = new CanvassedFramesWrapper(v.drawingCanvasLower1, 58, 'assets/img/ld1/lower?.jpg');
 
     drawingCanvasLower1.init(function() {
@@ -1113,7 +1085,7 @@ var main = function() {
           v.productPreviewMidnight.classList.add('visible');
 
           v.drawingCanvasLower1.classList.add('visible');
-          
+
           lipsDrawing.initLower(0.5, style, drawingCanvasLower1, function() {
             v.lipsDrawingLowerContainer.classList.remove('visible');
             v.lipsDrawingUpperContainer.classList.add('visible');
