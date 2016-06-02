@@ -231,7 +231,7 @@ var lipsDrawing = function() {
     }, false);
   };
 
-  module.initLower = function(threshold, style, videoPlayback, callback) {
+  module.initLower = function(threshold, style, framesSprite, callback) {
     (function() {
       var point;
 
@@ -328,9 +328,7 @@ var lipsDrawing = function() {
         v.lowerControl.style.bottom = point.y + 'px';
         v.lowerControlArrow.style.transform = 'rotate(' + (point.angle + 180) + 'deg)';
 
-        videoPlayback.play();
-        videoPlayback.currentTime = videoPlayback.duration * status.lower.progress;
-        videoPlayback.pause();
+        framesSprite.seek(status.lower.progress);
       }
     }, false);
   };
@@ -798,6 +796,16 @@ FancyContent.initWrappers = function(context) {
   }
 };
 
+var FramesSprite = function(sprite, framesCount, frameHeight) {
+  this.seek = function(progress) {
+    var frameIndex;
+
+    frameIndex = Math.floor(framesCount * progress);
+
+    sprite.style.backgroundPosition = '0 -' + (frameHeight * frameIndex) + 'px';
+  };
+};
+
 ///
 
 // magicControls.initRadial();
@@ -866,6 +874,7 @@ var main = function() {
 
   var commonCurtain, fancyIntroAbhLogo, fancyIntroText;
   var introChain, getStartedChain;
+  var lipsDrawingSpriteLower1;
 
   module.query = function() {
     v.commonCurtain = document.querySelector('#common-curtain');
@@ -885,6 +894,7 @@ var main = function() {
     v.productPreviewMidnight = document.querySelector('#product-preview-midnight');
     v.productPreviewMidnightButton = document.querySelector('#product-preview-midnight-button');
     v.applicationVideo1 = document.querySelector('#application-video-1');
+    v.applicationSpriteLower1 = document.querySelector('#application-sprite-lower-1');
   };
 
   module.init = function() {
@@ -897,6 +907,8 @@ var main = function() {
 
     fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
     fancyIntroText = new FancyContent(v.introText);
+
+    lipsDrawingSpriteLower1 = new FramesSprite(v.applicationSpriteLower1, 32, 720);
 
     introChain = new Chain()
       .wait(1)
@@ -964,7 +976,7 @@ var main = function() {
 
           v.productPreviewMidnight.classList.add('visible');
 
-          lipsDrawing.initLower(0.5, style, v.applicationVideo1, function() {
+          lipsDrawing.initLower(0.5, style, lipsDrawingSpriteLower1, function() {
             v.lipsDrawingLowerContainer.classList.remove('visible');
             v.lipsDrawingUpperContainer.classList.add('visible');
 

@@ -214,13 +214,13 @@ div.lips-drawing-container {
       }
 
       div.shadow {
-        background: rgba($km1, 0.25);
+        background: rgba($km1, 0.5);
       }
     }
 
     div.trajectory {
-      svg.path {
-        stroke: rgba($km1, 0.25);
+      svg path {
+        stroke: rgba($km1, 0.5);
       }
     }
   }
@@ -238,13 +238,13 @@ div.lips-drawing-container {
       }
 
       div.shadow {
-        background: rgba($km2, 0.25);
+        background: rgba($km2, 0.5);
       }
     }
 
     div.trajectory {
-      svg.path {
-        stroke: rgba($km2, 0.25);
+      svg path {
+        stroke: rgba($km2, 0.5);
       }
     }
   }
@@ -262,13 +262,13 @@ div.lips-drawing-container {
       }
 
       div.shadow {
-        background: rgba($km3, 0.25);
+        background: rgba($km3, 0.5);
       }
     }
 
     div.trajectory {
-      svg.path {
-        stroke: rgba($km3, 0.25);
+      svg path {
+        stroke: rgba($km3, 0.5);
       }
     }
   }
@@ -286,13 +286,13 @@ div.lips-drawing-container {
       }
 
       div.shadow {
-        background: rgba($km4, 0.25);
+        background: rgba($km4, 0.5);
       }
     }
 
     div.trajectory {
-      svg.path {
-        stroke: rgba($km4, 0.25);
+      svg path {
+        stroke: rgba($km4, 0.5);
       }
     }
   }
@@ -310,13 +310,13 @@ div.lips-drawing-container {
       }
 
       div.shadow {
-        background: rgba($km5, 0.25);
+        background: rgba($km5, 0.5);
       }
     }
 
     div.trajectory {
-      svg.path {
-        stroke: rgba($km5, 0.25);
+      svg path {
+        stroke: rgba($km5, 0.5);
       }
     }
   }
@@ -334,13 +334,13 @@ div.lips-drawing-container {
       }
 
       div.shadow {
-        background: rgba($km6, 0.25);
+        background: rgba($km6, 0.5);
       }
     }
 
     div.trajectory {
-      svg.path {
-        stroke: rgba($km6, 0.25);
+      svg path {
+        stroke: rgba($km6, 0.5);
       }
     }
   }
@@ -957,12 +957,27 @@ div.intro-text {
 }
 
 div.lips-drawing-video {
+  display: none;
   height: 100%;
 
   video {
     width: 100%;
     height: 100%;
     //object-fit: cover;
+  }
+}
+
+div.lips-drawing-sprite {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  //background-size: 1280px 720px;
+  background-position: 0 0;
+
+  &.lower-1 {
+    background-image: url($img-dir + '/application-lower-1.jpg');
   }
 }
 
