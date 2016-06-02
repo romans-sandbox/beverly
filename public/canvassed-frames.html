@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>(sandbox) canvassed frames</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <video id="application-video-1" width="500" controls>
+    <source src="assets/video/application-1.mp4" type="video/mp4">
+  </video>
+  <img src="" alt="" id="result">
+  <a href="" id="magic" target="_blank">magic</a>
+  <script>
+    var v = {};
+
+    v.applicationVideo1 = document.querySelector('#application-video-1');
+    v.result = document.querySelector('#result');
+    v.magic = document.querySelector('#magic');
+
+    var CanvassedFramesWrapper = function(playback) {
+      this.capture = function(startTime, endTime, framesPerSecond, callback) {
+        var time = startTime, frameNumber = 0, framesCount, diff;
+        var playbackWidth, playbackHeight, scale = 1;
+        var canvas, ctx;
+
+        canvas = document.createElement('canvas');
+        ctx = canvas.getContext('2d');
+
+        framesCount = Math.floor((endTime - startTime) * framesPerSecond);
+        diff = (endTime - startTime) / (framesCount - 1);
+
+        playback.addEventListener('seeked', function() {
+          ctx.drawImage(playback, 0, playbackHeight * scale * frameNumber++, playbackWidth * scale, playbackHeight * scale);
+
+          time += diff;
+
+          if (time <= endTime) {
+            playback.currentTime = time;
+          } else {
+            callback(canvas.toDataURL('image/jpeg'), framesCount, playbackWidth * scale, playbackHeight * scale);
+            console.log((Date.now() - stamp) / 1000, framesCount, frameNumber);
+          }
+        });
+
+        playback.addEventListener('loadeddata', function() {
+          playbackWidth = playback.videoWidth;
+          playbackHeight = playback.videoHeight;
+
+          canvas.width = playbackWidth * scale;
+          canvas.height = playbackHeight * scale * framesCount;
+
+          playback.currentTime = time;
+        });
+      };
+    };
+
+    var myCanvassedFramesWrapper = new CanvassedFramesWrapper(v.applicationVideo1);
+    myCanvassedFramesWrapper.capture(1.9, 5.65, 9, function(framesData, framesCount, frameWidth, frameHeight) {
+      /*v.result.width = frameWidth;
+      v.result.height = frameHeight * framesCount;
+      v.result.src = framesData;*/
+
+      v.magic.href = framesData;
+    });
+
+    console.log(new Array(40).join('-'));
+
+    var stamp = Date.now();
+  </script>
+</body>
+</html>
