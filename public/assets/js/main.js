@@ -1041,11 +1041,44 @@ var Chain = function() {
 var proxy = {};
 
 var main = function() {
-  var module = {}, v = {};
+  var module = {}, v = {}, options = {
+    durations: {
+      1: {
+        preLowerWait: 1.9,
+        postLowerTime: 5.65,
+        preUpperWait: 2
+      },
+      2: {
+        preLowerWait: 2,
+        postLowerTime: 4.45,
+        preUpperWait: 1.25
+      },
+      3: {
+        preLowerWait: 2,
+        postLowerTime: 5.5,
+        preUpperWait: 2.3
+      },
+      4: {
+        preLowerWait: 1.7,
+        postLowerTime: 4.8,
+        preUpperWait: 1.6
+      },
+      5: {
+        preLowerWait: 2.3,
+        postLowerTime: 6.15,
+        preUpperWait: 2.15
+      },
+      6: {
+        preLowerWait: 2.3,
+        postLowerTime: 4.95,
+        preUpperWait: 1.55
+      }
+    }
+  };
 
   var commonCurtain, fancyIntroAbhLogo, fancyIntroText;
   var introChain, getStartedChain;
-  var drawingCanvasLower1, drawingCanvasUpper1;
+  var drawingCanvasLower = {}, drawingCanvasUpper = {};
 
   module.query = function() {
     v.commonCurtain = document.querySelector('#common-curtain');
@@ -1069,13 +1102,61 @@ var main = function() {
     v.mimicsVideo = document.querySelector('#mimics-video');
     v.lipstickVideoContainer = document.querySelector('#lipstick-video-container');
     v.lipstickVideo = document.querySelector('#lipstick-video');
+
+    // 1
     v.drawingVideoContainer1 = document.querySelector('#drawing-video-container-1');
     v.drawingVideo1 = document.querySelector('#drawing-video-1');
     v.drawingCanvasLower1 = document.querySelector('#lips-drawing-canvas-lower-1');
     v.drawingCanvasUpper1 = document.querySelector('#lips-drawing-canvas-upper-1');
-    v.lookVideoContainer = document.querySelector('#look-video-container');
-    v.lookVideo = document.querySelector('#look-video');
-    v.lookCluster = document.querySelector('#look-cluster');
+    v.lookVideoContainer1 = document.querySelector('#look-video-container-1');
+    v.lookVideo1 = document.querySelector('#look-video-1');
+    v.lookCluster1 = document.querySelector('#look-cluster-1');
+
+    // 2
+    v.drawingVideoContainer2 = document.querySelector('#drawing-video-container-2');
+    v.drawingVideo2 = document.querySelector('#drawing-video-2');
+    v.drawingCanvasLower2 = document.querySelector('#lips-drawing-canvas-lower-2');
+    v.drawingCanvasUpper2 = document.querySelector('#lips-drawing-canvas-upper-2');
+    v.lookVideoContainer2 = document.querySelector('#look-video-container-2');
+    v.lookVideo2 = document.querySelector('#look-video-2');
+    v.lookCluster2 = document.querySelector('#look-cluster-2');
+
+    // 3
+    v.drawingVideoContainer3 = document.querySelector('#drawing-video-container-3');
+    v.drawingVideo3 = document.querySelector('#drawing-video-3');
+    v.drawingCanvasLower3 = document.querySelector('#lips-drawing-canvas-lower-3');
+    v.drawingCanvasUpper3 = document.querySelector('#lips-drawing-canvas-upper-3');
+    v.lookVideoContainer3 = document.querySelector('#look-video-container-3');
+    v.lookVideo3 = document.querySelector('#look-video-3');
+    v.lookCluster3 = document.querySelector('#look-cluster-3');
+
+    // 4
+    v.drawingVideoContainer4 = document.querySelector('#drawing-video-container-4');
+    v.drawingVideo4 = document.querySelector('#drawing-video-4');
+    v.drawingCanvasLower4 = document.querySelector('#lips-drawing-canvas-lower-4');
+    v.drawingCanvasUpper4 = document.querySelector('#lips-drawing-canvas-upper-4');
+    v.lookVideoContainer4 = document.querySelector('#look-video-container-4');
+    v.lookVideo4 = document.querySelector('#look-video-4');
+    v.lookCluster4 = document.querySelector('#look-cluster-4');
+
+    // 5
+    v.drawingVideoContainer5 = document.querySelector('#drawing-video-container-5');
+    v.drawingVideo5 = document.querySelector('#drawing-video-5');
+    v.drawingCanvasLower5 = document.querySelector('#lips-drawing-canvas-lower-5');
+    v.drawingCanvasUpper5 = document.querySelector('#lips-drawing-canvas-upper-5');
+    v.lookVideoContainer5 = document.querySelector('#look-video-container-5');
+    v.lookVideo5 = document.querySelector('#look-video-5');
+    v.lookCluster5 = document.querySelector('#look-cluster-5');
+
+    // 6
+    v.drawingVideoContainer6 = document.querySelector('#drawing-video-container-6');
+    v.drawingVideo6 = document.querySelector('#drawing-video-6');
+    v.drawingCanvasLower6 = document.querySelector('#lips-drawing-canvas-lower-6');
+    v.drawingCanvasUpper6 = document.querySelector('#lips-drawing-canvas-upper-6');
+    v.lookVideoContainer6 = document.querySelector('#look-video-container-6');
+    v.lookVideo6 = document.querySelector('#look-video-6');
+    v.lookCluster6 = document.querySelector('#look-cluster-6');
+
     v.fullScreenButton = document.querySelector('#full-screen-button');
   };
 
@@ -1093,19 +1174,33 @@ var main = function() {
     fancyIntroAbhLogo = new FancyContent(v.introAbhLogo);
     fancyIntroText = new FancyContent(v.introText);
 
-    drawingCanvasLower1 = new CanvassedFramesWrapper(v.drawingCanvasLower1, 58, 'assets/img/ld1/lower?.jpg');
+    drawingCanvasLower['1'] = new CanvassedFramesWrapper(v.drawingCanvasLower1, 58, 'assets/img/ld1/lower?.jpg');
 
-    drawingCanvasLower1.init(function() {
-      drawingCanvasLower1.seek(0);
-    });
+    drawingCanvasUpper['1'] = new CanvassedFramesWrapper(v.drawingCanvasUpper1, 59, 'assets/img/ld1/upper?.jpg');
 
-    drawingCanvasUpper1 = new CanvassedFramesWrapper(v.drawingCanvasUpper1, 59, 'assets/img/ld1/upper?.jpg');
+    drawingCanvasLower['2'] = new CanvassedFramesWrapper(v.drawingCanvasLower2, 39, 'assets/img/ld2/lower?.jpg');
 
-    drawingCanvasUpper1.init(function() {
-      drawingCanvasUpper1.seek(0);
-    });
+    drawingCanvasUpper['2'] = new CanvassedFramesWrapper(v.drawingCanvasUpper2, 60, 'assets/img/ld2/upper?.jpg');
+
+    drawingCanvasLower['3'] = new CanvassedFramesWrapper(v.drawingCanvasLower3, 55, 'assets/img/ld3/lower?.jpg');
+
+    drawingCanvasUpper['3'] = new CanvassedFramesWrapper(v.drawingCanvasUpper3, 55, 'assets/img/ld3/upper?.jpg');
+
+    drawingCanvasLower['4'] = new CanvassedFramesWrapper(v.drawingCanvasLower4, 49, 'assets/img/ld4/lower?.jpg');
+
+    drawingCanvasUpper['4'] = new CanvassedFramesWrapper(v.drawingCanvasUpper4, 71, 'assets/img/ld4/upper?.jpg');
+
+    drawingCanvasLower['5'] = new CanvassedFramesWrapper(v.drawingCanvasLower5, 60, 'assets/img/ld5/lower?.jpg');
+
+    drawingCanvasUpper['5'] = new CanvassedFramesWrapper(v.drawingCanvasUpper5, 85, 'assets/img/ld5/upper?.jpg');
+
+    drawingCanvasLower['6'] = new CanvassedFramesWrapper(v.drawingCanvasLower6, 42, 'assets/img/ld6/lower?.jpg');
+
+    drawingCanvasUpper['6'] = new CanvassedFramesWrapper(v.drawingCanvasUpper6, 83, 'assets/img/ld6/upper?.jpg');
 
     v.fullScreenButton.addEventListener('click', common.goFullScreen);
+
+    proxy.style = null;
 
     introChain = new Chain()
       .wait(1)
@@ -1157,21 +1252,18 @@ var main = function() {
         v.lipstickVideo.play();
 
         magicControls.initRadial(v.lipstickChoiceCluster, 0.5, function(wrapper) {
-          var style;
-
-          // is there a better way?
-          style = wrapper.classList.contains('style-1')
-            ? 'style-1'
+          proxy.style = wrapper.classList.contains('style-1')
+            ? '1'
             : wrapper.classList.contains('style-2')
-            ? 'style-2'
+            ? '2'
             : wrapper.classList.contains('style-3')
-            ? 'style-3'
+            ? '3'
             : wrapper.classList.contains('style-4')
-            ? 'style-4'
+            ? '4'
             : wrapper.classList.contains('style-5')
-            ? 'style-5'
+            ? '5'
             : wrapper.classList.contains('style-6')
-            ? 'style-6'
+            ? '6'
             : null;
 
           v.lipstickChoiceCluster.classList.remove('visible');
@@ -1184,45 +1276,58 @@ var main = function() {
           new Chain()
             .add(function() {
               v.lipsDrawingCluster.classList.add('visible');
-              v.drawingVideoContainer1.classList.add('visible');
-              v.drawingVideo1.currentTime = 0;
-              v.drawingVideo1.play();
+              v['drawingVideoContainer' + proxy.style].classList.add('visible');
+              v['drawingVideo' + proxy.style].currentTime = 0;
+              v['drawingVideo' + proxy.style].play();
+
+              drawingCanvasLower[proxy.style].init(function() {
+                drawingCanvasLower[proxy.style].seek(0);
+              });
             })
-            .wait(1.9)
+            .wait(options.durations[proxy.style].preLowerWait)
             .add(function() {
-              v.drawingCanvasLower1.classList.add('visible');
+              v['drawingCanvasLower' + proxy.style].classList.add('visible');
 
               lipsDrawing.query();
 
               v.lipsDrawingLowerContainer.classList.add('visible');
 
-              v.drawingVideoContainer1.classList.remove('visible');
-              v.drawingVideo1.pause();
-              v.drawingVideo1.currentTime = 5.65;
+              v['drawingVideoContainer' + proxy.style].classList.remove('visible');
+              v['drawingVideo' + proxy.style].pause();
+              v['drawingVideo' + proxy.style].currentTime = options.durations[proxy.style].postLowerTime;
 
-              lipsDrawing.initLower(0.5, style, drawingCanvasLower1, function() {
+              lipsDrawing.initLower(0.5, 'style-' + proxy.style, drawingCanvasLower[proxy.style], function() {
                 new Chain()
                   .add(function() {
                     v.lipsDrawingLowerContainer.classList.remove('visible');
-                    v.drawingCanvasLower1.classList.remove('visible');
+                    v['drawingCanvasLower' + proxy.style].classList.remove('visible');
 
-                    v.drawingVideoContainer1.classList.add('visible');
-                    v.drawingVideo1.play();
+                    v['drawingVideoContainer' + proxy.style].classList.add('visible');
+
+                    v['drawingVideo' + proxy.style].addEventListener('canplay', function() {
+                      console.log('yeah!!!!');
+                    });
+
+                    v['drawingVideo' + proxy.style].play();
+
+                    drawingCanvasUpper[proxy.style].init(function() {
+                      drawingCanvasUpper[proxy.style].seek(0);
+                    });
                   })
-                  .wait(2)
+                  .wait(options.durations[proxy.style].preUpperWait)
                   .add(function() {
-                    v.drawingCanvasUpper1.classList.add('visible');
+                    v['drawingCanvasUpper' + proxy.style].classList.add('visible');
 
                     v.lipsDrawingUpperContainer.classList.add('visible');
 
-                    v.drawingVideoContainer1.classList.remove('visible');
-                    v.drawingVideo1.pause();
+                    v['drawingVideoContainer' + proxy.style].classList.remove('visible');
+                    v['drawingVideo' + proxy.style].pause();
 
-                    lipsDrawing.initUpper(0.5, style, drawingCanvasUpper1, function() {
+                    lipsDrawing.initUpper(0.5, 'style-' + proxy.style, drawingCanvasUpper[proxy.style], function() {
                       new Chain()
                         .add(function() {
                           v.lipsDrawingUpperContainer.classList.remove('visible');
-                          v.drawingCanvasUpper1.classList.remove('visible');
+                          v['drawingCanvasUpper' + proxy.style].classList.remove('visible');
 
                           v.lipsDrawingCluster.classList.remove('visible');
 
@@ -1230,11 +1335,11 @@ var main = function() {
                         })
                         .wait(2)
                         .add(function() {
-                          v.lookCluster.classList.add('visible');
+                          v['lookCluster' + proxy.style].classList.add('visible');
 
-                          v.lookVideoContainer.classList.add('visible');
-                          v.lookVideo.currentTime = 0;
-                          v.lookVideo.play();
+                          v['lookVideoContainer' + proxy.style].classList.add('visible');
+                          v['lookVideo' + proxy.style].currentTime = 0;
+                          v['lookVideo' + proxy.style].play();
 
                           proxy.lookCurtain.unfold();
                         })

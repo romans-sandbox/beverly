@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>beverly</title>
   <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">-->
 </head>
 <body>
   <div id="common-curtain" class="magic-curtain style-0">
@@ -146,14 +146,14 @@
   </div>
   <div class="cluster" id="mimics-cluster">
     <div class="mimics-video" id="mimics-video-container">
-      <video id="mimics-video" width="100%" height="100%">
+      <video id="mimics-video" width="100%" height="100%" preload>
         <source src="assets/video/mimics.mp4" type="video/mp4">
       </video>
     </div>
   </div>
   <div class="cluster" id="lipstick-choice-cluster">
     <div class="lipstick-video" id="lipstick-video-container">
-      <video id="lipstick-video" width="100%" height="100%" loop>
+      <video id="lipstick-video" width="100%" height="100%" preload loop>
         <source src="assets/video/no-lipstick.mp4" type="video/mp4">
       </video>
     </div>
@@ -204,12 +204,47 @@
   </div>
   <div class="cluster" id="lips-drawing-cluster">
     <div class="lips-drawing-video" id="drawing-video-container-1">
-      <video id="drawing-video-1" width="100%" height="100%">
+      <video id="drawing-video-1" width="100%" height="100%" preload>
         <source src="assets/video/drawing-1.mp4" type="video/mp4">
       </video>
     </div>
     <canvas class="lips-drawing" id="lips-drawing-canvas-lower-1"></canvas>
     <canvas class="lips-drawing" id="lips-drawing-canvas-upper-1"></canvas>
+    <div class="lips-drawing-video" id="drawing-video-container-2">
+      <video id="drawing-video-2" width="100%" height="100%" preload>
+        <source src="assets/video/drawing-2.mp4" type="video/mp4">
+      </video>
+    </div>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-lower-2"></canvas>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-upper-2"></canvas>
+    <div class="lips-drawing-video" id="drawing-video-container-3">
+      <video id="drawing-video-3" width="100%" height="100%" preload>
+        <source src="assets/video/drawing-3.mp4" type="video/mp4">
+      </video>
+    </div>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-lower-3"></canvas>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-upper-3"></canvas>
+    <div class="lips-drawing-video" id="drawing-video-container-4">
+      <video id="drawing-video-4" width="100%" height="100%" preload>
+        <source src="assets/video/drawing-4.mp4" type="video/mp4">
+      </video>
+    </div>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-lower-4"></canvas>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-upper-4"></canvas>
+    <div class="lips-drawing-video" id="drawing-video-container-5">
+      <video id="drawing-video-5" width="100%" height="100%" preload>
+        <source src="assets/video/drawing-5.mp4" type="video/mp4">
+      </video>
+    </div>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-lower-5"></canvas>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-upper-5"></canvas>
+    <div class="lips-drawing-video" id="drawing-video-container-6">
+      <video id="drawing-video-6" width="100%" height="100%" preload>
+        <source src="assets/video/drawing-6.mp4" type="video/mp4">
+      </video>
+    </div>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-lower-6"></canvas>
+    <canvas class="lips-drawing" id="lips-drawing-canvas-upper-6"></canvas>
     <div class="lips-drawing-container upper" id="lips-drawing-upper-container">
       <div class="control upper" id="lips-drawing-upper-control">
         <div class="main"><div class="arrow"></div></div>
@@ -237,14 +272,49 @@
       </div>
     </div>
   </div>
-  <div class="cluster" id="look-cluster">
-    <div class="look-video" id="look-video-container">
-      <video id="look-video" width="100%" height="100%">
+  <div class="cluster" id="look-cluster-1">
+    <div class="look-video" id="look-video-container-1">
+      <video id="look-video-1" width="100%" height="100%" preload>
         <source src="assets/video/final-1.mp4" type="video/mp4">
       </video>
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+  <div class="cluster" id="look-cluster-2">
+    <div class="look-video" id="look-video-container-2">
+      <video id="look-video-2" width="100%" height="100%" preload>
+        <source src="assets/video/final-2.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="cluster" id="look-cluster-3">
+    <div class="look-video" id="look-video-container-3">
+      <video id="look-video-3" width="100%" height="100%" preload>
+        <source src="assets/video/final-3.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="cluster" id="look-cluster-4">
+    <div class="look-video" id="look-video-container-4">
+      <video id="look-video-4" width="100%" height="100%" preload>
+        <source src="assets/video/final-4.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="cluster" id="look-cluster-5">
+    <div class="look-video" id="look-video-container-5">
+      <video id="look-video-5" width="100%" height="100%" preload>
+        <source src="assets/video/final-5.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="cluster" id="look-cluster-6">
+    <div class="look-video" id="look-video-container-6">
+      <video id="look-video-6" width="100%" height="100%" preload>
+        <source src="assets/video/final-6.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <script src="assets/js/vendor/tweenmax.min.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>
